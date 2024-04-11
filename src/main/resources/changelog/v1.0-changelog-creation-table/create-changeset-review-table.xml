@@ -1,0 +1,16 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="create_table_reviews" author="alex">
+        <createTable tableName="reviews">
+            <column name="id" autoIncrement="true" type="int">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="review_text" type="varchar(1000)"/>
+            <column name="game_id" type="int">
+                <constraints nullable="false" foreignKeyName="reviewgame" references="game(id)"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false" foreignKeyName="reviewuser" references="user(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,12 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="create_table_game_catalog" author="via">
+        <createTable tableName="game_catalog">
+            <column name="game_id" type="int">
+                <constraints primaryKey="true" nullable="false" unique="true" foreignKeyName="cataloggame" references="game(id)"/>
+            </column>
+            <column name="catalog_id"  type="int">
+                <constraints primaryKey="true" nullable="false" unique="true" foreignKeyName="catalog" references="catalog(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
