@@ -16,9 +16,9 @@
     <title>Title</title>
 </head>
 <body>
-<div class="main">
+<jsp:include page="header.jsp"/>
+<div class="adminMain">
 
-    <jsp:include page="header.jsp"/>
 
     <%--tyt tipa bestselleri--%>
 

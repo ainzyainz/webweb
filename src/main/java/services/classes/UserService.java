@@ -75,10 +75,12 @@ public class UserService implements UserServiceInterface {
         }
         MyInterfaceToDAO<User> betweenBeginAndCommited = () -> {
             List<User> users = userDAO.getUserByEmailAndPassword(email, password);
-            return users == null ? null : users.stream().findFirst().orElse(null);
+            return users == null ? null :
+                    users.stream()
+                    .findFirst().orElse(null);
         };
         User user = UtilsInterface.superMethodInterface(betweenBeginAndCommited, entityManager);
-        return userConverter.applyDTO(user);
+        return user != null ? userConverter.applyDTO(user) : null;
     }
 
     @Override
@@ -93,25 +95,6 @@ public class UserService implements UserServiceInterface {
             return userDTOSet;
         };
         return UtilsInterface.superMethodInterface(betweenBeginAndCommited, entityManager);
-    }
-
-    @Override
-    public void clearBin(UserDTO userDTO) {
-        MyInterfaceToDAO<UserDTO> betweenBeginAndCommited = () -> {
-            User user = userDAO.read(userDTO.getId());
-            if (user == null) {
-                LOGGER.log(Level.INFO, NULL_MSG_CLEARBIN + userDTO.getEmail());
-                return null;
-            }
-            user.getBin().getGames().forEach(game -> {
-                game.getBins().remove(user.getBin());
-                gameDAO.update(game.getId(), game);
-            });
-            user.getBin().getGames().clear();
-            userDAO.update(user.getId(), user);
-            return userConverter.applyDTO(user);
-        };
-        UtilsInterface.superMethodInterface(betweenBeginAndCommited, entityManager);
     }
 
     public boolean removeFromBin(String game_id, UserDTO userDTO) {
@@ -231,7 +214,7 @@ public class UserService implements UserServiceInterface {
             user.setLibrary(library);
             user.setDescription(userDescription);
             user.setBalance(balance);
-
+            userDAO.create(user);
             try {
                 InternetAddress emailAddr = new InternetAddress(email);
                 emailAddr.validate();

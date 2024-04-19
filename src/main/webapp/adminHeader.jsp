@@ -14,6 +14,7 @@
 </head>
 <body>
 <% UserDTO user = (UserDTO) request.getSession().getAttribute("current"); %>
+
 <nav class="nav">
     <img class="nav-logo" src="logo.png">
     <p class="nav-logo">GamesPays</p>
@@ -28,9 +29,13 @@
             <li>
                 <a class="link" href="mainPageAdmin?action=catalogs">View Catalogs</a>
             </li>
+            <li>
+                <a class="link" href="mainPageAdmin">Back</a>
+            </li>
             <li class="nav-button">
                 <button class="btn white-btn" id="loginBtn" onclick="location.href='signUp.jsp';">Exit Profile</button>
             </li>
+
         </ul>
     </div>
 </nav>

@@ -14,15 +14,16 @@
 </head>
 
 <body>
-<div class="main">
-    <jsp:include page="adminHeader.jsp"/>
+<jsp:include page="adminHeader.jsp"/>
+<div class="adminMain">
     <% Set<UserDTO> users = (Set<UserDTO>) request.getSession().getAttribute("users");
     %>
-    <form action="mainPageAdmin" method="get">
-        <input type="hidden" name="action" value="readUser">
-        <input type="text" name="search">
-        <input type="submit">
-    </form>
+    <div class="search-div">
+        <form action="mainPageAdmin" method="get">
+            <input type="hidden" name="action" value="readUser">
+            <input type="text" placeholder="Search User" name="search">
+        </form>
+    </div>
     <table>
         <thead>
         <tr>
@@ -83,9 +84,8 @@
         </tr>
         </tbody>
     </table>
-    <a href="mainPageAdmin">Back</a>
 
-    <div class="createMe">
+    <div id="createMe">
         <form action="mainPageAdmin" method="get">
             <input type="hidden" name="action" value="createUser"/>
             <input class="input-field" type="text" name="email" placeholder="Email">

@@ -190,8 +190,7 @@ public class GameService implements GameServiceInterface {
             LOGGER.log(Level.INFO, INPUT_MSG_GETNOOFPAGES + perPage);
             return 0;
         }
-        MyInterfaceToDAO<Integer> betweenBeginAndCommit = () -> getAllGames().size();
-        int total = UtilsInterface.superMethodInterface(betweenBeginAndCommit, entityManager);
+        int total = getAllGames().size();
         int noOfPages = (int) Math.ceil(total * 1.0 / perPage);
         return noOfPages;
     }

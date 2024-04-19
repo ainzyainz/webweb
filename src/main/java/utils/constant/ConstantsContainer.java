@@ -112,6 +112,7 @@ public class ConstantsContainer {
     public static final String NOOFPAGES_MSG = "noOfPages";
     public static final String CURRENTPAGE_MSG = "currentPage";
     public static final String ACTION_MSG = "action";
+    public static final String USER_MSG = "user";
 
     public static final String INPUT_MSG_DELETECATALOG = "Incorrect input in deleteCatalog";
     public static final String PARSE_MSG_DELETECATALOG = "Failed parsing input in deleteCatalog";

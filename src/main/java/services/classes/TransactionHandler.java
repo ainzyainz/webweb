@@ -10,9 +10,12 @@ import entities.Game;
 import entities.User;
 import services.interfaces.TransactionInterface;
 import utils.converter.GameConverter;
+import utils.functionalinterface.MyInterfaceToDAO;
+import utils.functionalinterface.UtilsInterface;
 import utils.hibernate.HibernateUtils;
 
 import javax.persistence.EntityManager;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,38 +42,46 @@ public class TransactionHandler implements TransactionInterface {
     }
     @Override
     public boolean buyAllFromBin(UserDTO userDTO) {
+        if (userDTO==null){
+            LOGGER.log(Level.INFO,"User is null");
+            return false;
+        }
         BinDTO binDTO = userDTO.getBinDTO();
         if (binDTO.getGameDTOSet().isEmpty()){
             LOGGER.log(Level.INFO,userDTO.getEmail()+" bin is empty.");
             return false;
         }
-        double userBalance = userDTO.getBalanceDTO().getBalance();
-        double total = 0;
-        for (GameDTO temp : binDTO.getGameDTOSet()) {
-            total += temp.getGameStatisticsDTO().getPrice();
-            userDTO.getLibraryDTO().getGameDTOSet().add(temp);
-        }
-        if (userDAO.checkBalance(userBalance, total) == 0) {
-            LOGGER.log(Level.INFO, "User " + userDTO.getEmail() + " has not enough money to buy all games from bin");
-            return false;
-        }
-        User user = userDAO.read(userDTO.getId());
-        fromBalance(user, total);
-        Bin bin = user.getBin();
-        LOGGER.log(Level.INFO, "User " + userDTO.getEmail() + "purchased all games from bin");
 
-        for (Game game : bin.getGames()) {
-            game.getStats().setPurchaseCounter(game.getStats().getPurchaseCounter() + 1);
-            game.getLibraries().add(user.getLibrary());
-            game.getBins().remove(bin);
-            gameDAO.update(game.getId(),game);
-            LOGGER.log(Level.INFO, "User " + userDTO.getEmail() + " bought a game "+game.getName());
-        }
+        MyInterfaceToDAO<UserDTO> betweenBeginAndCommited = () -> {
+            double userBalance = userDTO.getBalanceDTO().getBalance();
+            double total = 0;
+            for (GameDTO temp : binDTO.getGameDTOSet()) {
+                total += temp.getGameStatisticsDTO().getPrice();
+                userDTO.getLibraryDTO().getGameDTOSet().add(temp);
+            }
+            if (userDAO.checkBalance(userBalance, total) == 0) {
+                LOGGER.log(Level.INFO, "User " + userDTO.getEmail() + " has not enough money to buy all games from bin");
+                return null;
+            }
+            User user = userDAO.read(userDTO.getId());
+            fromBalance(user, total);
+            Bin bin = user.getBin();
+            LOGGER.log(Level.INFO, "User " + userDTO.getEmail() + "purchased all games from bin");
 
-        user.getBin().getGames().clear();
-        userDTO.getBinDTO().getGameDTOSet().clear();
-        userDAO.update(user.getId(),user);
-        return true;
+            for (Game game : bin.getGames()) {
+                game.getStats().setPurchaseCounter(game.getStats().getPurchaseCounter() + 1);
+                game.getLibraries().add(user.getLibrary());
+                game.getBins().remove(bin);
+                user.getLibrary().getGames().add(game);
+                gameDAO.update(game.getId(),game);
+            }
+
+            user.getBin().getGames().clear();
+            userDTO.getBinDTO().getGameDTOSet().clear();
+            userDAO.update(user.getId(),user);
+            return userDTO;
+        };
+        return UtilsInterface.superMethodInterface(betweenBeginAndCommited,entityManager) != null;
     }
     @Override
     public boolean buyGame(String game_id, UserDTO userDTO) {
@@ -78,7 +89,7 @@ public class TransactionHandler implements TransactionInterface {
         try{
             id = Integer.parseInt(game_id);
         }catch (NumberFormatException e){
-            LOGGER.log(Level.INFO,"Id is not a nubmer");
+            LOGGER.log(Level.INFO,"Id is not a number");
             return false;
         }
 

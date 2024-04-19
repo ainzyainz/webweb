@@ -14,8 +14,8 @@
     <title>Title</title>
 </head>
 <body>
-    <div class="main">
-        <jsp:include page="adminHeader.jsp"/>
+<jsp:include page="adminHeader.jsp"/>
+    <div class="adminMain">
         <p>Welcome, admin. Here you can do anything you'd like!</p>
         <p>Creating, deleting, updating and reading entities</p>
     </div>

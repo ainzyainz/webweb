@@ -102,7 +102,7 @@ public class AdminServlet extends HttpServlet {
                 .stream()
                 .findFirst()
                 .orElse(null);
-        req.setAttribute(GAMES_MSG, gameDTO);
+        req.setAttribute(GAME_MSG, gameDTO);
         req.getRequestDispatcher(DASH + ADMINGAME_URL + JSP).forward(req, resp);
     }
 
@@ -112,7 +112,7 @@ public class AdminServlet extends HttpServlet {
                 .stream()
                 .findFirst()
                 .orElse(null);
-        req.setAttribute(USERS_MSG, userDTO);
+        req.setAttribute(USER_MSG, userDTO);
         req.getRequestDispatcher(DASH + ADMINUSER_URL + JSP).forward(req, resp);
     }
 

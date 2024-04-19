@@ -9,7 +9,6 @@ public interface UserServiceInterface {
     boolean writeReview(String text, UserDTO userDTO, GameDTO gameDTO);
     UserDTO loginUser(String email, String password);
     Set<UserDTO> getAllUsers();
-    void clearBin(UserDTO userDTO);
     boolean removeFromBin(String game_id, UserDTO userDTO);
     boolean addToBin(String game_id, UserDTO userDTO);
     UserDTO registerUser(String password, String email,

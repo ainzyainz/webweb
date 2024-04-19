@@ -1,12 +1,16 @@
 <databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
     <changeSet id="create_table_game_bin" author="via">
         <createTable tableName="game_bin">
+
             <column name="game_id" type="int">
-                <constraints primaryKey="true" nullable="false" unique="true" foreignKeyName="bingame" references="game(id)"/>
+                <constraints primaryKey="true" primaryKeyName="prkey1" nullable="false" foreignKeyName="bingame" references="game(id)"/>
             </column>
             <column name="bin_id"  type="int">
-                <constraints primaryKey="true" nullable="false" unique="true" foreignKeyName="bin" references="bin(id)"/>
+                <constraints primaryKey="true" primaryKeyName="prkey1" nullable="false" foreignKeyName="bin" references="bin(id)"/>
             </column>
+
+
+
         </createTable>
     </changeSet>
 </databaseChangeLog>

@@ -38,6 +38,7 @@ public class BalanceServlet extends HttpServlet {
             case ACTION_ADDFIFTY: transactionHandler.toBalance(userDTO,50);
             break;
             case ACTION_ADDGRAND: transactionHandler.toBalance(userDTO,100);
+            break;
             default:
                 LOGGER.log(Level.INFO,NO_ACTION_MSG);
                 resp.sendRedirect(BALANCEERROR_URL+JSP);

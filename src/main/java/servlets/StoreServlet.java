@@ -73,6 +73,7 @@ public class StoreServlet extends HttpServlet {
         if (!transactionHandler.buyAllFromBin(userDTO)){
             LOGGER.log(Level.INFO,BUYALL_FAILED);
             req.setAttribute(FAILED_MSG,true);
+            req.setAttribute(GAMES_MSG,userDTO.getBinDTO().getGameDTOSet());
             req.getRequestDispatcher(DASH +BIN_URL+JSP).forward(req,resp);
             return;
         }
