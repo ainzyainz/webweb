@@ -1,0 +1,16 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="create_table_game" author="via">
+        <createTable tableName="game">
+            <column name="id" autoIncrement="true" type="int">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="name" type="varchar(200)"/>
+            <column name="game_recs_id" type="int">
+                <constraints nullable="false" foreignKeyName="game_reqs" references="game_reqs(id)"/>
+            </column>
+            <column name="game_stats_id" type="int">
+                <constraints nullable="false" foreignKeyName="game_stats" references="game_stats(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

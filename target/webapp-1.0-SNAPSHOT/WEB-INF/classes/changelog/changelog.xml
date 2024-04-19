@@ -1,0 +1,33 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <include file="v1.0-changelog-creation-table/create-changeset-user-table.xml"
+             relativeToChangelogFile="true"/>
+    <include file="v1.0-changelog-creation-table/create-changeset-user_decs-table.xml"
+             relativeToChangelogFile="true"/>
+    <include file="v1.0-changelog-creation-table/create-changeset-game_stats-table.xml"
+             relativeToChangelogFile="true"/>
+    <include file="v1.0-changelog-creation-table/create-changeset-game_reqs-table.xml"
+             relativeToChangelogFile="true"/>
+    <include file="v1.0-changelog-creation-table/create-changeset-game-table.xml"
+             relativeToChangelogFile="true"/>
+    <include file="v1.0-changelog-creation-table/create-changeset-library-table.xml"
+             relativeToChangelogFile="true"/>
+    <include file="v1.0-changelog-creation-table/create-changeset-game_library-table.xml"
+             relativeToChangelogFile="true"/>
+    <include file="v1.0-changelog-creation-table/create-changeset-balance-table.xml"
+             relativeToChangelogFile="true"/>
+    <include file="v1.0-changelog-creation-table/create-changeset-catalog-table.xml"
+             relativeToChangelogFile="true"/>
+    <include file="v1.0-changelog-creation-table/create-changeset-game_catalog-table.xml"
+             relativeToChangelogFile="true"/>
+    <include file="v1.0-changelog-creation-table/create-changeset-bin-table.xml"
+             relativeToChangelogFile="true"/>
+    <include file="v1.0-changelog-creation-table/create-changeset-game_bin-table.xml"
+             relativeToChangelogFile="true"/>
+    <include file="v1.0-changelog-creation-table/create-changeset-review-table.xml"
+             relativeToChangelogFile="true"/>
+
+
+</databaseChangeLog>
