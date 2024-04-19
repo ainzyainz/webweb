@@ -14,8 +14,10 @@
     <title>Title</title>
 </head>
 <body>
-    <a href="mainPageAdmin?action=users">View Users</a>
-    <a href="mainPageAdmin?action=games">View Games</a>
-    <a href="mainPageAdmin?action=catalogs">View Catalogs</a>
-</body>
+    <div class="main">
+        <jsp:include page="adminHeader.jsp"/>
+        <p>Welcome, admin. Here you can do anything you'd like!</p>
+        <p>Creating, deleting, updating and reading entities</p>
+    </div>
+    </body>
 </html>

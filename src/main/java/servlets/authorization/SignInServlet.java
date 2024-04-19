@@ -1,7 +1,7 @@
 package servlets.authorization;
 
 import DTO.UserDTO;
-import services.UserService;
+import services.classes.UserService;
 import utils.roles.Roles;
 
 import javax.servlet.ServletException;
@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
+import static utils.constant.ConstantsContainer.*;
 
 @WebServlet(name = "SignInServlet", urlPatterns = {"/signIn"})
 public class SignInServlet extends HttpServlet {
@@ -23,20 +25,20 @@ public class SignInServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String email = req.getParameter("email");
-        String password = req.getParameter("password");
+        String email = req.getParameter(EMAIL_MSG);
+        String password = req.getParameter(PASSWORD_MSG);
         UserDTO userDTO = userService.loginUser(email, password);
 
         if (userDTO==null){
-            req.setAttribute("wrong",true);
+            req.setAttribute(WRONG_MSG,true);
             doGet(req,resp);
             return;
         }
 
-        req.getSession().setAttribute("current", userDTO);
-        req.getSession().setAttribute("password", password);
-        req.getSession().setAttribute("email", email);
-        req.getSession().setAttribute("role", userDTO.getRole());
+        req.getSession().setAttribute(CURRENT_MSG, userDTO);
+        req.getSession().setAttribute(PASSWORD_MSG, password);
+        req.getSession().setAttribute(EMAIL_MSG, email);
+        req.getSession().setAttribute(ROLE_MSG, userDTO.getRole());
 
         if (userDTO.getRole()==Roles.ADMIN){
          resp.sendRedirect("mainPageAdmin");

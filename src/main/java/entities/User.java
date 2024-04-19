@@ -29,22 +29,28 @@ public class User {
     private Roles role;
 
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
     private UserDescription description;
 
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
     private Library library;
 
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Balance balance;
 
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
     @Access(AccessType.PROPERTY)
     private Bin bin;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private Set<Review> reviews;
 

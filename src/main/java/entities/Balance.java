@@ -11,7 +11,7 @@ import java.util.HashMap;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode(exclude = "user")
+@EqualsAndHashCode
 @Table
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,6 +25,7 @@ public class Balance {
     private double balance;
 
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;

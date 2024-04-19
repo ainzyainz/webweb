@@ -13,29 +13,13 @@ import static utils.constant.ConstantsContainer.GET_ALL_ENTITY_SUCCESS;
 
 public class UserDAOImpl extends DAOImpl<User> implements UserDAO {
 
+    public UserDAOImpl(EntityManager entityManager) {
+        super(entityManager);
+    }
+
     @Override
     public Class<User> getEntityClass() {
         return User.class;
-    }
-
-    @Override
-    public User create(User object) {
-        return super.create(object);
-    }
-
-    @Override
-    public User read(long id) {
-        return super.read(id);
-    }
-
-    @Override
-    public User update(long id, User object) {
-        return super.update(id, object);
-    }
-
-    @Override
-    public int delete(long id) {
-        return super.delete(id);
     }
 
     @Override
@@ -103,7 +87,9 @@ public class UserDAOImpl extends DAOImpl<User> implements UserDAO {
 
     public List<User> getUserByEmailAndPassword(String email, String password) {
         String query = String.format("%s%s%s%s%s", GET_USER_BY_EMAIL_QUERY, email, AND_PASSWORD, password, END_QUERY2);
-        List<User> users = getEntityManager().createNativeQuery(query, User.class).getResultList();
+        List<User> users = getEntityManager()
+                .createNativeQuery(query, User.class)
+                .getResultList();
         if (users.isEmpty()) {
             return null;
         }

@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@EqualsAndHashCode(exclude = {"user","games"})
+@EqualsAndHashCode
 @Getter
 @Setter
 @Table
@@ -21,11 +21,13 @@ public class Library {
     private long id;
 
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "libraries")
     private Set<Game> games = new HashSet<>();
 }

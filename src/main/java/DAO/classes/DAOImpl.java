@@ -15,7 +15,11 @@ import static utils.constant.ConstantsContainer.*;
 
 public abstract class DAOImpl<T> implements DAO<T> {
 
-    private final EntityManager entityManager = HibernateUtils.getEntityManager();
+    private EntityManager entityManager;
+
+    public DAOImpl(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
     final Logger LOGGER = Logger.getLogger(DAOImpl.class.getName());
 
@@ -26,53 +30,41 @@ public abstract class DAOImpl<T> implements DAO<T> {
             LOGGER.log(Level.INFO, CREATE_FAILED_MSG);
             return null;
         }
-        MyInterfaceToDAO<T> betweenBeginAndCommitted = () -> {
-            entityManager.persist(object);
-            return object;
-        };
-        UtilsInterface.superMethodInterface(betweenBeginAndCommitted, entityManager);
+        entityManager.persist(object);
         LOGGER.log(Level.INFO, CREATE_SUCCESS_MSG);
         return object;
     }
 
     public T read(long id) {
-        MyInterfaceToDAO<T> betweenBeginAndCommitted = () -> entityManager.find(getEntityClass(), id);
-        T object = UtilsInterface.superMethodInterface(betweenBeginAndCommitted, entityManager);
-        if (object == null) {
-            LOGGER.log(Level.INFO,READ_FAILED_MSG);
+        T object = entityManager.find(getEntityClass(),id);
+        if (object==null){
+            LOGGER.log(Level.INFO,READ_FAILED_MSG+ id);
+            return null;
         }
         LOGGER.log(Level.INFO,READ_SUCCESS_MSG);
         return object;
     }
 
     public T update(long id, T object) {
-        MyInterfaceToDAO<T> betweenBeginAndCommitted = () -> {
-            T temp = entityManager.find(getEntityClass(), id);
-            return ReflectionUtils.updateReflection(object, temp, entityManager);
-        };
-        T result = UtilsInterface.superMethodInterface(betweenBeginAndCommitted, entityManager);
-
-        if(result == null) {
-            LOGGER.log(Level.INFO, UPDATE_FAILED_MSG);
+        T temp = entityManager.find(getEntityClass(),id);
+        T result = ReflectionUtils.updateReflection(object,temp,entityManager);
+        if (result==null){
+            LOGGER.log(Level.INFO,UPDATE_FAILED_MSG);
+            return null;
         }
-        LOGGER.log(Level.INFO, UPDATE_SUCCESS_MSG);
+        LOGGER.log(Level.INFO,UPDATE_SUCCESS_MSG);
         return result;
     }
 
-    public int delete(long id) {
-        MyInterfaceToDAO<T> betweenBeginAndCommitted = () -> {
-            T object = entityManager.find(getEntityClass(), id);
-            entityManager.remove(object);
-            return object;
-        };
-        T object = UtilsInterface.superMethodInterface(betweenBeginAndCommitted, entityManager);
-        if (object == null) {
-            LOGGER.log(Level.INFO, DELETE_FAILED_MSG);
-            return -1;
+    public boolean delete(long id) {
+        T object = entityManager.find(getEntityClass(),id);
+        if (object==null){
+            LOGGER.log(Level.INFO,DELETE_FAILED_MSG + id);
+            return false;
         }
-        LOGGER.log(Level.INFO, DELETE_SUCCESS_MSG);
-        return 1;
-
+        entityManager.remove(object);
+        LOGGER.log(Level.INFO,DELETE_SUCCESS_MSG);
+        return true;
     }
 
     public EntityManager getEntityManager() {

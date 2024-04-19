@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Builder
 @ToString
-@EqualsAndHashCode(exclude = "user")
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -33,6 +33,7 @@ public class UserDescription {
     private int age;
 
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;

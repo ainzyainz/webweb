@@ -15,31 +15,15 @@ import static utils.constant.ConstantsContainer.*;
 
 public class GameDAOImpl extends DAOImpl<Game> implements GameDAO {
 
+
+    public GameDAOImpl(EntityManager entityManager) {
+        super(entityManager);
+    }
+
     @Override
     public Class<Game> getEntityClass() {
         return Game.class;
     }
-
-    @Override
-    public Game create(Game object) {
-        return super.create(object);
-    }
-
-    @Override
-    public Game read(long id) {
-        return super.read(id);
-    }
-
-    @Override
-    public Game update(long id, Game object) {
-        return super.update(id, object);
-    }
-
-    @Override
-    public int delete(long id) {
-        return super.delete(id);
-    }
-
     @Override
     public EntityManager getEntityManager() {
         return super.getEntityManager();
@@ -52,11 +36,11 @@ public class GameDAOImpl extends DAOImpl<Game> implements GameDAO {
         List<Game> list = query.getResultList();
         Set<Game> games = new HashSet<>();
         if (query.getResultList().isEmpty()){
-            LOGGER.log(Level.INFO,"No games found");
+            LOGGER.log(Level.INFO,NO_GAMES_FOUND);
             return games;
         }
         list.forEach(games::add);
-        LOGGER.log(Level.INFO,"Loaded page with games");
+        LOGGER.log(Level.INFO,GET_LIMITED_SUCCESS + x);
         return games;
     }
 

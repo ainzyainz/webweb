@@ -39,6 +39,7 @@ table{
 #profile-info:target {
   display: block;
 }
+
 th,
 td{
 
@@ -133,7 +134,12 @@ tr:nth-of-type(2n){
 ::-webkit-input-placeholder{
   color: #fff;
 }
-
+#createMe{
+  display: none;
+}
+#createMe:target{
+  display: block;
+}
 @media only screen and (max-width: 786px){
   .nav-button{
     display: none;

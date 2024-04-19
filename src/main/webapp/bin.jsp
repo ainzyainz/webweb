@@ -47,6 +47,11 @@
                 <td style="" class="delete-link">
                     <div class="nav-button">
                         <a class="btn white-btn" href="mainPage?action=buyBin">Buy all</a>
+                        <%
+                            if(request.getAttribute("failed")!=null){
+                                %>
+                                <p>You have not enough money</p>
+                <% } %>
                     </div>
                 </td>
             </tr>

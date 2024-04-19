@@ -9,29 +9,13 @@ import javax.persistence.EntityManager;
 
 public class BalanceDAOImpl extends DAOImpl<Balance> implements BalanceDAO {
 
+    public BalanceDAOImpl(EntityManager entityManager) {
+        super(entityManager);
+    }
+
     @Override
     public Class<Balance> getEntityClass() {
         return Balance.class;
-    }
-
-    @Override
-    public Balance create(Balance object) {
-        return super.create(object);
-    }
-
-    @Override
-    public Balance read(long id) {
-        return super.read(id);
-    }
-
-    @Override
-    public Balance update(long id, Balance object) {
-        return super.update(id, object);
-    }
-
-    @Override
-    public int delete(long id) {
-        return super.delete(id);
     }
 
     @Override

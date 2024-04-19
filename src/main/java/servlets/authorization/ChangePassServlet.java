@@ -1,7 +1,7 @@
 package servlets.authorization;
 
 import DTO.UserDTO;
-import services.ChangePassHandler;
+import services.classes.ChangePassHandler;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static utils.constant.ConstantsContainer.*;
+
 @WebServlet(name = "ChangePassServlet", urlPatterns = {"/changePass"})
 public class ChangePassServlet extends HttpServlet {
 
@@ -20,10 +22,10 @@ public class ChangePassServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UserDTO user = (UserDTO) req.getSession().getAttribute("current");
+        UserDTO user = (UserDTO) req.getSession().getAttribute(CURRENT_MSG);
         if (user == null) {
-            LOGGER.log(Level.INFO, "User is null");
-            req.setAttribute("wrong", true);
+            LOGGER.log(Level.INFO, USER_IS_NULL);
+            req.setAttribute(WRONG_MSG, true);
             req.getRequestDispatcher("signUp.jsp").forward(req, resp);
             return;
         }
@@ -32,22 +34,21 @@ public class ChangePassServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-
-        String newPass = req.getParameter("new");
-        UserDTO current = (UserDTO) req.getSession().getAttribute("current");
+        String newPass = req.getParameter(NEW_MSG);
+        UserDTO current = (UserDTO) req.getSession().getAttribute(CURRENT_MSG);
 
         if (newPass == null) {
-            LOGGER.log(Level.INFO, "New password is null");
+            LOGGER.log(Level.INFO, PASSWORD_IS_NULL);
             resp.sendRedirect("/forgotPass.jsp");
             return;
         }
         changePassHandler.updatePassword(current.getId(), newPass);
         current.setPassword(newPass);
 
-        req.getSession().setAttribute("current", current);
-        req.getSession().setAttribute("password", newPass);
-        req.getSession().setAttribute("email", current.getEmail());
-        LOGGER.log(Level.INFO, "Changed password successfully");
+        req.getSession().setAttribute(CURRENT_MSG, current);
+        req.getSession().setAttribute(PASSWORD_MSG, newPass);
+        req.getSession().setAttribute(EMAIL_MSG, current.getEmail());
+        LOGGER.log(Level.INFO, PASSWORD_CHANGE_SUCCESS + newPass);
         resp.sendRedirect("/signUp");
     }
 }

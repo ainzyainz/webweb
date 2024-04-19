@@ -7,10 +7,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@EqualsAndHashCode(exclude = "games")
+@EqualsAndHashCode
 @Getter
 @Setter
-@ToString(exclude = "games")
+@ToString
 @Table
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,6 +25,8 @@ public class Catalog {
 
 
     @ManyToMany(mappedBy = "catalogs")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<Game> games = new HashSet<>();
 
 }

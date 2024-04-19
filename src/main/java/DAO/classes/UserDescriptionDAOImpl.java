@@ -4,6 +4,7 @@ package DAO.classes;
 import DAO.interfaces.UserDescriptionDAO;
 import entities.UserDescription;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -16,27 +17,14 @@ public class UserDescriptionDAOImpl extends DAOImpl<UserDescription> implements 
     private final Logger LOGGER = Logger.getLogger(UserDescriptionDAOImpl.class.getName());
     private int noOfRecords;
 
+    public UserDescriptionDAOImpl(EntityManager entityManager) {
+        super(entityManager);
+    }
+
     @Override
     public Class<UserDescription> getEntityClass() {
         return UserDescription.class;
     }
-
-    @Override
-    public UserDescription create(UserDescription obj) { return super.create(obj); }
-
-    @Override
-    public UserDescription read(long id) {
-        return super.read(id);
-    }
-
-    @Override
-    public UserDescription update(long id, UserDescription student) {return super.update(id, student); }
-
-    @Override
-    public int delete(long id) {
-        return super.delete(id);
-    }
-
 
     @Override
     public List<UserDescription> findBySearch(String search) {

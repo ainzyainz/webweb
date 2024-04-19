@@ -7,7 +7,10 @@ import java.util.Arrays;
 
 public class ReflectionUtils {
     public static <T> T updateReflection(T object, T temp, EntityManager entityManager) {
-            Field[] objFields = object.getClass().getDeclaredFields();
+           if (object==null||temp==null){
+               return null;
+           }
+        Field[] objFields = object.getClass().getDeclaredFields();
         Arrays.stream(objFields)
                 .filter(field -> field.isAnnotationPresent(Id.class))
                 .peek(q -> q.setAccessible(true))
@@ -20,7 +23,6 @@ public class ReflectionUtils {
                         e.printStackTrace();
                     }
                 });
-
         return entityManager.merge(object);
     }
 }

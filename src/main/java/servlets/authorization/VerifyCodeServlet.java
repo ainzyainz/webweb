@@ -1,7 +1,7 @@
 package servlets.authorization;
 
 import DTO.UserDTO;
-import services.ChangePassHandler;
+import services.classes.ChangePassHandler;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static utils.constant.ConstantsContainer.*;
+
 @WebServlet(name = "VerifyCodeServlet", urlPatterns = {"/verifyCode"})
 public class VerifyCodeServlet extends HttpServlet {
 
@@ -20,17 +22,18 @@ public class VerifyCodeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String email = req.getParameter("email");
+
+        String email = req.getParameter(EMAIL_MSG);
         UserDTO userDTO = changePassHandler.isValid(email);
 
         if (userDTO != null) {
-            req.getSession().setAttribute("current", userDTO);
-            req.getSession().setAttribute("email", email);
-            req.getSession().setAttribute("code", changePassHandler.sendEmail(email));
+            req.getSession().setAttribute(CURRENT_MSG, userDTO);
+            req.getSession().setAttribute(EMAIL_MSG, email);
+            req.getSession().setAttribute(CODE_MSG, changePassHandler.sendEmail(email));
             req.getRequestDispatcher("verifyCode.jsp").forward(req, resp);
         } else {
-            LOGGER.log(Level.INFO,"UserDTO is null");
-            req.setAttribute("wrong", true);
+            LOGGER.log(Level.INFO, USER_IS_NULL);
+            req.setAttribute(WRONG_MSG, true);
             req.getRequestDispatcher("forgotPass.jsp").forward(req, resp);
         }
     }
@@ -38,20 +41,19 @@ public class VerifyCodeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 
-        if (req.getSession().getAttribute("code") == null || req.getParameter("inputCode") == null) {
-            LOGGER.log(Level.INFO, "Code or input are null");
-            req.setAttribute("wrong", true);
+        if (req.getSession().getAttribute(CODE_MSG) == null || req.getParameter(INPUTCODE_MSG) == null) {
+            LOGGER.log(Level.INFO, CODE_IS_NULL);
+            req.setAttribute(WRONG_MSG, true);
             req.getRequestDispatcher("verifyCode.jsp").forward(req, resp);
         }
         int code;
         int inputCode;
-
         try {
-            code = (int) req.getSession().getAttribute("code");
-            inputCode = Integer.parseInt(req.getParameter("inputCode"));
+            code = (int) req.getSession().getAttribute(CODE_MSG);
+            inputCode = Integer.parseInt(req.getParameter(INPUTCODE_MSG));
         } catch (NumberFormatException e) {
-            LOGGER.log(Level.INFO, "Code or input are not a number");
-            req.setAttribute("wrong", true);
+            LOGGER.log(Level.INFO, PARSING_CODE_MSG);
+            req.setAttribute(WRONG_MSG, true);
             req.getRequestDispatcher("verifyCode.jsp").forward(req, resp);
             return;
         }
@@ -59,8 +61,8 @@ public class VerifyCodeServlet extends HttpServlet {
         if (changePassHandler.codeVerified(code, inputCode)) {
             resp.sendRedirect("changePass");
         } else {
-            LOGGER.log(Level.INFO, "Failed to match the codes during password change");
-            req.setAttribute("wrong", true);
+            LOGGER.log(Level.INFO, MATCH_PASS_FAIL + code + "!=" + inputCode);
+            req.setAttribute(WRONG_MSG, true);
             req.getRequestDispatcher("verifyCode.jsp").forward(req, resp);
         }
     }

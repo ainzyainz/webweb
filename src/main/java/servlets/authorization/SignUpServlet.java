@@ -1,9 +1,7 @@
 package servlets.authorization;
 
 import DTO.UserDTO;
-import entities.User;
-import services.UserService;
-import utils.roles.Roles;
+import services.classes.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
+import static utils.constant.ConstantsContainer.*;
 
 @WebServlet(name = "SignUpServlet", urlPatterns = {"/signUp"})
 public class SignUpServlet extends HttpServlet {
@@ -26,10 +26,10 @@ public class SignUpServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String email = req.getParameter("email");
-        String password = req.getParameter("password");
-        String name = req.getParameter("name");
-        String surname = req.getParameter("surname");
+        String email = req.getParameter(EMAIL_MSG);
+        String password = req.getParameter(PASSWORD_MSG);
+        String name = req.getParameter(NAME_MSG);
+        String surname = req.getParameter(SURNAME_MSG);
 
        UserDTO userDTO = userService.registerUser(password,email,name,surname);
 
@@ -38,10 +38,10 @@ public class SignUpServlet extends HttpServlet {
               doGet(req,resp);
               return;
       }
-            req.getSession().setAttribute("current", userDTO);
-            req.getSession().setAttribute("password", password);
-            req.getSession().setAttribute("email", email);
-            req.getSession().setAttribute("role", userDTO.getRole());
+            req.getSession().setAttribute(CURRENT_MSG, userDTO);
+            req.getSession().setAttribute(PASSWORD_MSG, password);
+            req.getSession().setAttribute(EMAIL_MSG, email);
+            req.getSession().setAttribute(ROLE_MSG, userDTO.getRole());
 
             resp.sendRedirect("mainPage");
     }

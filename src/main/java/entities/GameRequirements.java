@@ -5,7 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@EqualsAndHashCode(exclude = "game")
+@EqualsAndHashCode
 @Getter
 @Setter
 @ToString
@@ -19,6 +19,7 @@ public class GameRequirements {
     private long id;
 
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "reqs")
     @Access(AccessType.PROPERTY)
     private Game game;

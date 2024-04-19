@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Entity
 @ToString
-@EqualsAndHashCode(exclude = {"user","games"})
+@EqualsAndHashCode
 @Getter
 @Setter
 @Table
@@ -20,11 +20,13 @@ public class Bin {
     private long id;
 
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "bins")
     private Set<Game> games = new HashSet<>();
 

@@ -1,46 +1,52 @@
-package services;
+package services.classes;
 
 import DAO.classes.UserDAOImpl;
 import DTO.UserDTO;
 import entities.User;
+import services.interfaces.ChangePassInterface;
 import utils.converter.UserConverter;
+import utils.hibernate.HibernateUtils;
 
 import javax.mail.*;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.persistence.EntityManager;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ChangePassHandler {
-    private UserDAOImpl userDAO = new UserDAOImpl();
+import static utils.constant.ConstantsContainer.*;
+
+public class ChangePassHandler implements ChangePassInterface {
+    private EntityManager entityManager = HibernateUtils.getEntityManager();
+    private UserDAOImpl userDAO = new UserDAOImpl(entityManager);
     private Logger LOGGER = Logger.getLogger(ChangePassHandler.class.getName());
     private final UserConverter userConverter = new UserConverter();
 
+    @Override
     public int sendEmail(String email) {
         try {
             InternetAddress emailAddr = new InternetAddress(email);
             emailAddr.validate();
         } catch (AddressException e) {
-            LOGGER.log(Level.INFO, "Email wasn't written correctly");
-            return -1;
+            LOGGER.log(Level.INFO, NO_SUCH_EMAIL+email);
+            return 0;
         }
 
         int code = (int) (Math.random() * 9000 + 1000);
 
         Properties props = new Properties();
 
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.socketFactory.port", "465");
-        props.put("mail.smtp.socketFactory.class",
-                "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", "465");
+        props.put(HOST_PROP, HOST_VAL);
+        props.put(FACTORYPORT_PROP, FACTORYPORT_VAL);
+        props.put(FACTORYCLASS_PROP, FACTORYCLASS_VAL);
+        props.put(AUTH_PROP, AUTH_VAL);
+        props.put(AUTHPORT_PROP, AUTHPORT_VAL);
 
         Session session = Session.getDefaultInstance(props, new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("g30656561@gmail.com", "nslenecxkbpenout");
+                return new PasswordAuthentication(SENDER_EMAIL, APP_PASSWORD);
             }
         });
         try {
@@ -52,13 +58,14 @@ public class ChangePassHandler {
             message.setText("your code is: " + code);
 
             Transport.send(message);
-            LOGGER.log(Level.INFO,"Email sent successfully");
+            LOGGER.log(Level.INFO,EMAIL_SENDING_SUCCESS+email);
         } catch (MessagingException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.INFO,EMAIl_SENDING_FAILED+email);
+            return 0;
         }
         return code;
     }
-
+    @Override
     public UserDTO isValid(String email) {
         User changeUser = userDAO.getUserByEmail(email);
         if (changeUser != null) {
@@ -66,12 +73,11 @@ public class ChangePassHandler {
         }
         return null;
     }
+    @Override
     public boolean codeVerified(int code, int inputCode){
-        if (code == inputCode){
-            return true;
-        }
-        return false;
+        return code == inputCode;
     }
+    @Override
     public void updatePassword(long id, String newPassword) {
         User user = userDAO.read(id);
         user.setPassword(newPassword);

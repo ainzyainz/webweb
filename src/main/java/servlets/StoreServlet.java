@@ -1,12 +1,11 @@
 package servlets;
 
-import DTO.BinDTO;
 import DTO.CatalogDTO;
 import DTO.GameDTO;
 import DTO.UserDTO;
-import services.GameService;
-import services.TransactionHandler;
-import services.UserService;
+import services.classes.GameService;
+import services.classes.TransactionHandler;
+import services.classes.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,13 +13,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@WebServlet(name = "StoreServlet", urlPatterns = {"/mainPage"})
+import static utils.constant.ConstantsContainer.*;
+
+@WebServlet(name = STORE_SERVLET, urlPatterns = {DASH +MAINPAGE_URL})
 public class StoreServlet extends HttpServlet {
     private GameService gameService = new GameService();
     private TransactionHandler transactionHandler = new TransactionHandler();
@@ -28,112 +27,115 @@ public class StoreServlet extends HttpServlet {
     private final UserService userService = new UserService();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String action = req.getParameter("action");
+        String action = req.getParameter(ACTION_);
         if (action==null){
             getList(req,resp);
             return;
         }
         switch (action){
-            case "buy": buyGame(req,resp);
+            case ACTION_BUY: buyGame(req,resp);
                 break;
-            case "toBin" : addToBin(req,resp);
+            case ACTION_TOBIN: addToBin(req,resp);
             break;
-            case "fromBin" : removeFromBin(req,resp);
+            case ACTION_FROMBIN : removeFromBin(req,resp);
             break;
-            case "getBin" : getBin(req,resp);
+            case ACTION_GETBIN : getBin(req,resp);
             break;
-            case"buyBin" : buyAllFromBin(req,resp);
+            case ACTION_BUYBIN : buyAllFromBin(req,resp);
             break;
-            case "read" : readGame(req,resp);
+            case ACTION_READ : readGame(req,resp);
             break;
-            case "change" : changeProfile(req,resp);
+            case ACTION_CHANGE : changeProfile(req,resp);
+            default:
+                LOGGER.log(Level.INFO,UNKNOWN_ACTION_MSG);
+                resp.sendRedirect(UNKNOWNACTION_URL+JSP);
         }
     }
     public void changeProfile(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String userId = req.getParameter("id");
-        String name = req.getParameter("name");
-        String surname = req.getParameter("surname");
-        String address = req.getParameter("address");
-        String userAge = req.getParameter("age");
-        req.getSession().setAttribute("current",userService.updateUser(userId,name,surname,address,userAge));
+        String userId = req.getParameter(ID_MSG);
+        String name = req.getParameter(NAME_MSG);
+        String surname = req.getParameter(SURNAME_MSG);
+        String address = req.getParameter(ADDRESS_MSG);
+        String userAge = req.getParameter(AGE_MSG);
+        req.getSession().setAttribute(CURRENT_MSG,userService.updateUser(userId,name,surname,address,userAge));
         getList(req,resp);
     }
     public void readGame(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String search = req.getParameter("search");
+        String search = req.getParameter(SEARCH_MSG);
         Set<CatalogDTO> catalogDTOSet = gameService.getAllCatalogs();
-        req.getSession().setAttribute("catalogs",catalogDTOSet);
-        req.getSession().setAttribute("games",gameService.searchGame(search));
-        req.getRequestDispatcher("/mainPage.jsp").forward(req,resp);
+        req.getSession().setAttribute(CATALOGS_MSG,catalogDTOSet);
+        req.getSession().setAttribute(GAMES_MSG,gameService.searchGame(search));
+        req.getRequestDispatcher(DASH +MAINPAGE_URL+JSP).forward(req,resp);
     }
 
-    public void buyAllFromBin(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public void buyAllFromBin(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         UserDTO userDTO = (UserDTO) req.getSession().getAttribute("current");
-        if (transactionHandler.buyAllFromBin(userDTO)!=1){
-            LOGGER.log(Level.INFO,"Couldn't buy all games from bin");
-            resp.sendRedirect("mainPage");
+        if (!transactionHandler.buyAllFromBin(userDTO)){
+            LOGGER.log(Level.INFO,BUYALL_FAILED);
+            req.setAttribute(FAILED_MSG,true);
+            req.getRequestDispatcher(DASH +BIN_URL+JSP).forward(req,resp);
             return;
         }
-        LOGGER.log(Level.INFO,"Bought all games from bin");
-        req.getSession().setAttribute("current",userDTO);
-        resp.sendRedirect("mainPage");
+        LOGGER.log(Level.INFO,BUYALL_SUCCESS);
+        req.getSession().setAttribute(CURRENT_MSG,userDTO);
+        resp.sendRedirect(MAINPAGE_URL);
     }
 
     public void removeFromBin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String id = req.getParameter("id");
+        String id = req.getParameter(ID_MSG);
         UserDTO userDTO = (UserDTO) req.getSession().getAttribute("current");
-        if (userService.removeFromBin(id,userDTO)!=1){
-            LOGGER.log(Level.INFO,"Couldn't remove game from bin");
+        if (!userService.removeFromBin(id,userDTO)){
+            LOGGER.log(Level.INFO,REMOVEFROMBIN_FAILED+userDTO.getEmail());
             return;
         }
-        req.getSession().setAttribute("current",userDTO);
-        LOGGER.log(Level.INFO,"Removed game from user's bin");
+        req.getSession().setAttribute(CURRENT_MSG,userDTO);
+        LOGGER.log(Level.INFO,REMOVEFROMBIN_SUCCESS+userDTO.getEmail());
         getBin(req,resp);
     }
 
     public void getBin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UserDTO userDTO = (UserDTO) req.getSession().getAttribute("current");
-        req.setAttribute("games",userDTO.getBinDTO().getGameDTOSet());
-        req.getRequestDispatcher("/bin.jsp").forward(req,resp);
+        UserDTO userDTO = (UserDTO) req.getSession().getAttribute(CURRENT_MSG);
+        req.setAttribute(GAMES_MSG,userDTO.getBinDTO().getGameDTOSet());
+        req.getRequestDispatcher(DASH +BIN_URL+JSP).forward(req,resp);
     }
 
     public void addToBin(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String id = req.getParameter("id");
-        UserDTO userDTO = (UserDTO) req.getSession().getAttribute("current");
-        if (userService.addToBin(id,userDTO)!=1){
-            LOGGER.log(Level.INFO,"User couldn't add game to a bin");
-            resp.sendRedirect("mainPage");
+        String id = req.getParameter(ID_MSG);
+        UserDTO userDTO = (UserDTO) req.getSession().getAttribute(CURRENT_MSG);
+        if (!userService.addToBin(id,userDTO)){
+            LOGGER.log(Level.INFO,ADDTOBIN_FAILED+userDTO.getEmail());
+            resp.sendRedirect(MAINPAGE_URL);
             return;
         }
-        LOGGER.log(Level.INFO,"User "+userDTO.getUserDescriptionDTO().getName()+ " added game to their bin");
-        req.getSession().setAttribute("current",userDTO);
-        resp.sendRedirect("mainPage");
+        LOGGER.log(Level.INFO,ADDTOBIN_SUCCESS+userDTO.getEmail());
+        req.getSession().setAttribute(CURRENT_MSG,userDTO);
+        resp.sendRedirect(MAINPAGE_URL);
     }
     public void buyGame(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String id = req.getParameter("id");
-        UserDTO userDTO = (UserDTO) req.getSession().getAttribute("current");
-        if (transactionHandler.buyGame(id,userDTO)!=1){
-            LOGGER.log(Level.INFO,"User couldn't buy a game");
-            resp.sendRedirect("mainPage");
+        String id = req.getParameter(ID_MSG);
+        UserDTO userDTO = (UserDTO) req.getSession().getAttribute(CURRENT_MSG);
+        if (!transactionHandler.buyGame(id,userDTO)){
+            LOGGER.log(Level.INFO,BUYGAME_FAILED+id);
+            resp.sendRedirect(MAINPAGE_URL);
             return;
         }
-        LOGGER.log(Level.INFO,"User "+ userDTO.getUserDescriptionDTO().getName() + " bought a game");
-        req.getSession().setAttribute("current",userDTO);
-        resp.sendRedirect("mainPage");
+        LOGGER.log(Level.INFO,BUYGAME_SUCCESS+id);
+        req.getSession().setAttribute(CURRENT_MSG,userDTO);
+        resp.sendRedirect(MAINPAGE_URL);
     }
     public void getList(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         int page = 1;
         int perPage = 5;
-        if (req.getParameter("page")!=null){
-            page = Integer.parseInt(req.getParameter("page"));
+        if (req.getParameter(PAGE_MSG)!=null){
+            page = Integer.parseInt(req.getParameter(PAGE_MSG));
         }
         int pages = gameService.getNoOfPages(perPage);
         Set<CatalogDTO> catalogDTOSet = gameService.getAllCatalogs();
         Set<GameDTO> allGames = gameService.getGamesLimited((page-1)*perPage,perPage);
-        req.getSession().setAttribute("catalogs",catalogDTOSet);
-        req.getSession().setAttribute("games",allGames);
-        req.getSession().setAttribute("noOfPages",pages);
-        req.getSession().setAttribute("currentPage",page);
-        req.getRequestDispatcher("/mainPage.jsp").forward(req,resp);
+        req.getSession().setAttribute(CATALOGS_MSG,catalogDTOSet);
+        req.getSession().setAttribute(GAMES_MSG,allGames);
+        req.getSession().setAttribute(NOOFPAGES_MSG,pages);
+        req.getSession().setAttribute(CURRENTPAGE_MSG,page);
+        req.getRequestDispatcher(DASH + MAINPAGE_URL + JSP).forward(req,resp);
     }
-
 }

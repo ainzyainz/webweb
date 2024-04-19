@@ -2,61 +2,211 @@ package utils.constant;
 
 public class ConstantsContainer {
 
-    public static final String GET_ALL_STUDENT_QUERY = "select s from Student s";
-    public static final String GET_ALL_USER_QUERY ="select u from User u";
-    public static final String GET_ALL_GAMES_QUERY ="select g from Game g";
+    public static final String GET_ALL_USER_QUERY = "select u from User u";
+    public static final String GET_ALL_GAMES_QUERY = "select g from Game g";
 
-    public static final String GET_ALL_CATALOG_QUERY ="select u from Catalog u";
+    public static final String DASH = "/";
+    public static final String JSP = ".jsp";
+    public static final String MAINPAGE_URL = "mainPage";
+    public static final String CURRENTGAME_URL = "currentGame";
+    public static final String NOSUCHGAME_URL = "noSuchGame";
+    public static final String UNKNOWNACTION_URL = "unknownAction";
+    public static final String BIN_URL = "bin";
+    public static final String MAINPAGEADMIN_URL = "mainPageAdmin";
+    public static final String ADMINGAME_URL = "adminGame";
+    public static final String ADMINUSER_URL = "adminUser";
+    public static final String ADMINCATALOG_URL = "adminCatalog";
+    public static final String BALANCE_URL = "balance";
+    public static final String BALANCEERROR_URL = "balanceError";
+    public static final String ADDFIVE_URL = "addFive";
+    public static final String ADDTEN_URL = "addTen";
+    public static final String ADDTWENTY_URL  = "addTwenty";
+    public static final String ADDFIFTY_URL = "addFifty";
+    public static final String ADDGRAND_URL = "addGrand";
+    public static final String PROFILE_URL = "profile";
+    public static final String CURRENTCATALOG_URL = "currentCatalog";
 
+    public static final String ADMIN_SERVLET = "AdminServlet";
+    public static final String STORE_SERVLET = "StoreServlet";
+    public static final String GAME_SERVLET = "GameServlet";
+    public static final String BALANCE_SERVLET = "BalanceServlet";
+    public static final String CATALOG_SERVLET = "CatalogServlet";
+
+    public static final String GET_ALL_CATALOG_QUERY = "select u from Catalog u";
+    public static final String INPUT_MSG_GETGAMEBYGAME = "Incorrect input in getGameByName";
+    public static final String GETBYGAME_NOT_FOUND = "No game found with name ";
+    public static final String GETALLGAMES_RESULT_LIST_NULL = "ResultList in getAllGames is null";
+    public static final String INPUT_MSG_CREATEGAME = "Incorrect input in creategame";
+    public static final String PARSE_MSG_CREATEGAME = "Failed creating game. Price is not a number. Typed value = ";
+    public static final String INCORRECT_PRICE = "Price value cannot be less than 0. Set value = ";
+    public static final String INPUT_MSG_GETGAMESBYCATALOG = "Incorrect input in getGamesByCatalog";
+    public static final String PARSE_MSG_GETGAMESBYCATALOG = "Failed parsing id in getGamesByCatalog. Typed value = ";
+    public static final String INPUT_MSG_GETGAMESLIMITED = "Incorrect input in getGamesLimited. Typed values = ";
+    public static final String INPUT_MSG_GETNOOFPAGES = "Incorrect input in getNoOfPages. Typed value = ";
+    public static final String PARSE_MSG_ADDTOCATALOG = "Couldn't add to catalog. Id is not a number.";
+    public static final String ALREADY_EXISTS = "The game is already in the catalog";
+    public static final String ADDTOCATALOG_SUCCESS = " added to catalog ";
+    public static final String BUYALL_FAILED = "Couldn't buy all games from bin";
+    public static final String BUYALL_SUCCESS = "Bought all games from bin";
+    public static final String REMOVEFROMBIN_FAILED = "Couldn't remove game from ";
+    public static final String REMOVEFROMBIN_SUCCESS = "Removed game from ";
+    public static final String INPUT_MSG_REGISTERUSER = "Incorrect input in registerUser";
+    public static final String NULL_MSG_REGISTERUSER = "Failed to register user with email. User already exists. Input email = ";
+    public static final String ADDTOBIN_FAILED = "Couldn't add game to bin ";
+    public static final String VALIDATE_EMAIL_FAIL = "Email wasn't written correctly. Input email = ";
+    public static final String SUCCESS_REGISTERUSER = "Registered a user with email ";
+    public static final String INPUT_MSG_SEARCHUSER = "Empty search input in searchUser. Getting all users";
+    public static final String NULL_MSG_SEARCHUSER = "No users found with fields ";
+    public static final String INPUT_MSG_DELETEUSER = "Cannot delete user with no id";
+    public static final String PARSE_MSG_DELETEUSER = "Failed parsing id in deleteUser. Id is not a number";
+    public static final String NULL_MSG_DELETEUSER = "Failed deleting user. User does not exist. Input id = ";
+    public static final String SUCCESS_DELETEUSER = "Deleted user with id =";
+    public static final String INPUT_MSG_UPDATEUSER = "Incorrect input in updateUser.";
+    public static final String ADDTOBIN_SUCCESS = "Added a game to bin ";
+    public static final String INPUT_MSG_LOGINUSER = "Incorrect input in loginUser";
+    public static final String NULL_MSG_CLEARBIN = "Failed to find user with email ";
+    public static final String INPUT_MSG_REMOVEFROMBIN = "Incorrect input in removeFromBin";
+    public static final String PARSE_MSG_REMOVEFROMBIN = "Failed parsing id in removeFromBin. Id is not an number";
+    public static final String NULL_MSG_REMOVEFROMBIN = "Removing from bin failed due to user or game being non-existent";
+    public static final String INPUT_MSG_ADDTOBIN = "Incorrect input in addToBin";
+    public static final String PARSE_MSG_ADDTOBIN = "Game id is not a number. Typed value = ";
+    public static final String NULL_MSG_ADDTOBIN = "Failed to add game to bin. Non-existent game or user.";
+    public static final String ADDTOBIN_ALREADY_EXIST = "Failed to add game to bin of user ";
+
+    public static final String ID_MSG = "id";
+    public static final String NAME_MSG = "name";
+    public static final String EMAIL_MSG = "email";
+    public static final String ROLE_MSG = "role";
+    public static final String PASSWORD_MSG = "password";
+    public static final String SURNAME_MSG = "surname";
+    public static final String ADDRESS_MSG = "address";
+    public static final String AGE_MSG = "age";
+    public static final String CURRENT_MSG = "current";
+    public static final String SEARCH_MSG = "search";
+    public static final String CATALOGS_MSG = "catalogs";
+    public static final String CATALOGID_MSG = "catalog_id";
+    public static final String GAMES_MSG = "games";
+    public static final String PAGE_MSG = "page";
+    public static final String USERS_MSG = "users";
+    public static final String CODE_MSG = "code";
+    public static final String INPUTCODE_MSG = "inputCode";
+    public static final String DELETEUSER_MSG = "deleteUser";
+    public static final String DELETEGAME_MSG = "deleteGame";
+    public static final String DELETECATALOG_MSG = "deleteCatalog";
+    public static final String OS_MSG = "OS";
+    public static final String PROCESSOR_MSG = "processor";
+    public static final String MEMORY_MSG = "memory";
+    public static final String GRAPHICS_MSG = "graphics";
+    public static final String DIRECTX_MSG = "directX";
+    public static final String STORAGE_MSG = "storage";
+    public static final String PRICE_MSG = "price";
+    public static final String CREATEGAME_MSG = "createGame";
+    public static final String CREATEUSER_MSG = "createUser";
+    public static final String READUSER_MSG = "readUser";
+    public static final String READGAME_MSG = "readGame";
+    public static final String UPDATEUSER_MSG = "updateUser";
+    public static final String DISPLAYEDIT_MSG = "displayEdit";
+    public static final String DISPLAYEDITGAME_MSG = "displayEditGame";
+    public static final String UPDATEGAME_MSG = "updateGame";
+    public static final String TOCATALOG_MSG = "toCatalog";
+    public static final String NOOFPAGES_MSG = "noOfPages";
+    public static final String CURRENTPAGE_MSG = "currentPage";
+    public static final String ACTION_MSG = "action";
+
+    public static final String INPUT_MSG_DELETECATALOG = "Incorrect input in deleteCatalog";
+    public static final String PARSE_MSG_DELETECATALOG = "Failed parsing input in deleteCatalog";
+    public static final String DELETE_FAIL = "Failed deleting non-existent catalog with id ";
+    public static final String DELETE_SUCCESS = "Deleted catalog with id ";
+    public static final String PARSE_MSG_DELETEGAME = "Failed parsing game id in deleteGame. Typed value = ";
+    public static final String NO_GAMES_FOUND = "No games found in list";
+    public static final String GET_LIMITED_SUCCESS = "Loaded page with the amount of games - ";
     public static final String GET_SEARCH = "from UserDescription where name = :value or  surname = :value or address = :value or age = :value";
     public static final String GET_SEARCH_USER = "from User where email = :value";
+    public static final String INPUT_MSG_ADDTOCATALOG = "Catalog id input is incorrect. Typed values = ";
     public static final String GET_SEARCH_GAME = "from Game where name = :value";
     public static final String GET_SEARCH_GAME_REQS = "from GameRequirements where OS = :value or memory = :value or graphics = :value or directX = :value or storage = :value or processor = :value";
-    public static final String GET_SEARCH_CATALOG = "from Catalog where name = :value";
     public static final String FROM_GAME = "from Game";
-
+    public static final String PARSE_MSG_UPDATEGAME = "Failed parsing id in updateGame. Typed values(id,price) = ";
+    public static final String UPDATE_FAILED = "Failed game update. No game with name ";
+    public static final String NEW_MSG = "new";
+    public static final String UPDATE_SUCCESS = "Updated game with name = ";
     public static final String FIND_BY_NAME = "from Catalog where name = :value";
     public static final String CREATE_FAILED_MSG = "Create failed. Nothing found";
     public static final String CREATE_SUCCESS_MSG = "Entity created";
+    public static final String NO_ACTION_MSG = "A problem occurred during balance transaction.";
 
+    public static final String ACTION_ = "action";
+    public static final String ACTION_ADDFIVE = "addFive";
+    public static final String ACTION_ADDTEN = "addTen";
+    public static final String ACTION_ADDTWENTY = "addTwenty";
+    public static final String ACTION_ADDFIFTY = "addFifty";
+    public static final String ACTION_ADDGRAND = "addGrand";
+
+    public static final String SENDER_EMAIL = "g30656561@gmail.com";
+    public static final String APP_PASSWORD = "nslenecxkbpenout";
+
+    public static final String EMAIL_SENDING_SUCCESS = "Email successfully sent to address ";
+    public static final String EMAIl_SENDING_FAILED = "Failed sending email to addrres ";
+
+    public static final String NO_SUCH_EMAIL = "Incorrect input for address ";
     public static final String READ_FAILED_MSG = "Read failed. Nothing found";
     public static final String READ_SUCCESS_MSG = "Read the entity";
-
+    public static final String UNKNOWN_ACTION_MSG = "Error calling an unknown action in StoreServlet";
+    public static final String BUYGAME_FAILED = "User couldn't buy a game ";
+    public static final String BUYGAME_SUCCESS = "User bought a game ";
     public static final String UPDATE_FAILED_MSG = "Update failed. Nothing found";
     public static final String UPDATE_SUCCESS_MSG = "Updated the entity";
-
+    public static final String GAME_IS_NULL = "Game is null";
+    public static final String CODE_IS_NULL = "Code or inputCode is null";
+    public static final String PARSING_CODE_MSG = "Code or input are not a number";
     public static final String DELETE_FAILED_MSG = "Delete failed. Nothing found";
     public static final String DELETE_SUCCESS_MSG = "Deleted the entity";
-
+    public static final String GAME_MSG = "game";
+    public static final String MATCH_PASS_FAIL = "Failed to match the codes during password change.";
     public static final String START_GET_ALL_ENTITY = "Getting all entities from db";
     public static final String GET_ALL_ENTITY_SUCCESS = "Got all entities successfully";
-
+    public static final String VERIFICATION_FAILED = "Failed role verification filter.";
+    public static final String VERIFICATION_FAILED_SESSION = "No active session.";
+    public static final String VERIFICATION_FAILED_USER = "No active user";
+    public static final String VERIFICATION_FAILED_VALIDATE = "Wrong credentials.";
     public static final String VALUE = "value";
     public static final String LIST_IS_EMPTY = "current list is empty";
-
-    public static final Integer ROW_IN_PAGE = 10;
-    public static final String USER_IS_NULL = "userDTOS is null";
-    public static final String PAGE = "page";
-    public static final Double PAGE_COEFFICIENT = 1.0;
-    public static final String INCORRECT_TYPE = "incorrect type";
-
-    public static final String DO_POST_START = "doPost start";
-    public static final String DO_GET_START = "doGet start";
-    public static final String PAGE_IS_NULL = "page is null";
-    public static final String CREATE_SUCCESS = "create success";
-    public static final String CRETE_FAILED = "create failed";
-    public static final String DELETE_SUCCESS = "delete success";
-    public static final String DELETE_FAILED = "delete failed";
-    public static final String BOUGHT_GAME_MSG = "user bought";
+    public static final String WRONG_MSG = "wrong";
+    public static final String USER_IS_NULL = "User is null";
+    public static final String ACTION_BUY = "buy";
+    public static final String ACTION_TOBIN = "toBin";
+    public static final String ACTION_FROMBIN = "fromBin";
+    public static final String ACTION_GETBIN = "getBin";
+    public static final String ACTION_BUYBIN = "buyBin";
+    public static final String ACTION_READ = "read";
+    public static final String ACTION_CHANGE = "change";
+    public static final String FAILED_MSG = "failed";
     public static final String GET_USER_BY_EMAIL_QUERY = "select * from user where email = '";
     public static final String GET_GAME_BY_NAME_QUERY = "select * from game where name = '";
     public static final String GET_USER_BY_PASSWORD_QUERY = "select * from user where password = '";
     public static final String END_QUERY = "'";
     public static final String END_QUERY2 = "';";
+    public static final String PASSWORD_IS_NULL = "New password is null";
     public static final String AND_PASSWORD = "' and password ='";
+    public static final String PASSWORD_CHANGE_SUCCESS = "User changed password to ";
 
-    public static final String GET_STUDENT_BY_USER_ID_QUERY = "select * from student where user_id = '";
-    public static final String GET_STUDENT_BY_USER_ID_NOT_FOUND = " 404: Student findByUserId not found";
+    public static final String WRITEREVIEW_INPUT_MSG = "Incorrect input in writeReview ";
+    public static final String WRITEREVIEW_NULL_MSG = "Failed writing review. User or game is non-existent";
+    public static final String WRITEREVIEW_SUCCESS = "Review added by user ";
 
-    private ConstantsContainer() {}
+    public static final String HOST_PROP = "mail.stmp.host";
+    public static final String HOST_VAL = "smtp.gmail.com";
+    public static final String FACTORYPORT_PROP = "mail.smtp.socketFactory.port";
+    public static final String FACTORYPORT_VAL = "465";
+    public static final String FACTORYCLASS_PROP = "mail.smtp.socketFactory.class";
+    public static final String FACTORYCLASS_VAL = "javax.net.ssl.SSLSocketFactory";
+    public static final String AUTH_PROP = "mail.smtp.auth";
+    public static final String AUTH_VAL = "true";
+    public static final String AUTHPORT_PROP = "mail.smtp.port";
+    public static final String AUTHPORT_VAL  = "465";
+
+
+
+    private ConstantsContainer() {
+    }
 }

@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "reviews")
-@ToString(exclude = {"game","user"})
+@ToString
 @Builder
 @NoArgsConstructor
 @Getter
@@ -21,6 +21,8 @@ public class Review {
     private String reviewText;
 
     @ManyToOne
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @JoinColumn(name = "game_id",nullable = false)
     private Game game;
 

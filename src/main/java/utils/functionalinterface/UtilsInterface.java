@@ -1,5 +1,7 @@
 package utils.functionalinterface;
 
+import utils.hibernate.HibernateUtils;
+
 import javax.persistence.EntityManager;
 
 public class UtilsInterface {

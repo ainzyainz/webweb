@@ -2,7 +2,6 @@ package filters;
 
 import DTO.UserDTO;
 import utils.roles.Roles;
-
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -11,10 +10,11 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static utils.constant.ConstantsContainer.*;
 
 @WebFilter(filterName = "/RoleFilter", urlPatterns = {"/mainPageAdmin"})
 public class RoleFilter implements Filter {
-    Logger LOGGER = Logger.getLogger(RoleFilter.class.getName());
+    private final Logger LOGGER = Logger.getLogger(RoleFilter.class.getName());
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -28,21 +28,21 @@ public class RoleFilter implements Filter {
         HttpSession session = req.getSession();
 
         if (session == null) {
-            LOGGER.log(Level.WARNING,"Failed role verification filter. No active session");
+            LOGGER.log(Level.WARNING, VERIFICATION_FAILED + VERIFICATION_FAILED_SESSION);
             res.sendRedirect(contextPath + "/signUp.jsp");
             return;
         }
 
-        UserDTO user = (UserDTO) session.getAttribute("current");
+        UserDTO user = (UserDTO) session.getAttribute(CURRENT_MSG);
         if (user == null) {
-            LOGGER.log(Level.INFO,"Failed role verification filter. No active user");
+            LOGGER.log(Level.INFO, VERIFICATION_FAILED + VERIFICATION_FAILED_USER);
             res.sendRedirect(contextPath + "/signUp.jsp");
             return;
         }
 
         Roles role = user.getRole();
         if (role != Roles.ADMIN) {
-            LOGGER.log(Level.INFO,"Failed role verification filter. Wrong credentials");
+            LOGGER.log(Level.INFO, VERIFICATION_FAILED + VERIFICATION_FAILED_VALIDATE);
             res.sendRedirect(contextPath + "/signUp.jsp");
             return;
         }
