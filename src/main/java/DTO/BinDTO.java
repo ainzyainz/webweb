@@ -8,11 +8,15 @@ import java.util.Set;
 @Getter
 @Setter
 @EqualsAndHashCode
-@ToString(exclude = "userDTO")
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class BinDTO {
     private long id;
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private UserDTO userDTO;
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<GameDTO> gameDTOSet;
 }

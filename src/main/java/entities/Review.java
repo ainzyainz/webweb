@@ -27,6 +27,8 @@ public class Review {
     private Game game;
 
     @ManyToOne
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @JoinColumn(name = "user_id",nullable = false)
     private User user;
 }

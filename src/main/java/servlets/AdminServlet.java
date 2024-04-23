@@ -58,9 +58,11 @@ public class AdminServlet extends HttpServlet {
             case READGAME_MSG:
                 readGame(req, resp);
                 break;
+
             case UPDATEUSER_MSG:
                 updateUser(req, resp);
                 break;
+
             case DISPLAYEDIT_MSG:
                 displayEdit(req, resp);
                 break;

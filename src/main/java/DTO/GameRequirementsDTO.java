@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@EqualsAndHashCode
 public class GameRequirementsDTO {
 
     private long id;
@@ -18,5 +19,6 @@ public class GameRequirementsDTO {
     private String storage;
     private String processor;
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private GameDTO gameDTO;
 }

@@ -1,9 +1,7 @@
 package DAO.classes;
 
 import DAO.interfaces.BalanceDAO;
-import DAO.interfaces.BinDAO;
 import entities.Balance;
-import entities.Bin;
 
 import javax.persistence.EntityManager;
 

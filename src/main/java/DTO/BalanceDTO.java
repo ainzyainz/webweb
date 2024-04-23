@@ -9,13 +9,15 @@ import java.util.HashMap;
 @Builder
 @Getter
 @Setter
-@ToString(exclude = "userDTO")
+@ToString
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class BalanceDTO {
     private long id;
     private double balance;
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private UserDTO userDTO;
 
 }

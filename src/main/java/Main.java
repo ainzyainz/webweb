@@ -15,9 +15,6 @@ public class Main {
         userService.registerUser("asd","asd@gmail.com","asd","asd");
         gameService.createGame("25","a","a","a","a","a","a","a");
         gameService.createGame("25","b","a","a","a","a","a","b");
-        Set<UserDTO> userSet = userService.searchUser("asd");
-        System.out.println(userSet);
-
     }
 
 }

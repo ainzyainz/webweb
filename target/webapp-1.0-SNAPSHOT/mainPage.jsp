@@ -42,7 +42,7 @@
             %>
 
             <tr>
-                <td data-cell="Name"><a href="currentGame?name=<%=temp.getName()%>"><%=temp.getName()%></a>
+                <td data-cell="Name"><a href="currentGame?id=<%=temp.getId()%>"><%=temp.getName()%></a>
                 </td>
 
 

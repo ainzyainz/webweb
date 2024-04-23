@@ -56,7 +56,6 @@ public class ChangePassHandler implements ChangePassInterface {
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
             message.setSubject("Hello");
             message.setText("your code is: " + code);
-
             Transport.send(message);
             LOGGER.log(Level.INFO,EMAIL_SENDING_SUCCESS+email);
         } catch (MessagingException e) {

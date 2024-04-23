@@ -22,18 +22,23 @@ public class UserDTO {
 
     private Roles role;
 
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private UserDescriptionDTO userDescriptionDTO;
 
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private BalanceDTO balanceDTO;
 
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private BinDTO binDTO;
 
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<ReviewDTO> reviewDTOSet;
 
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private LibraryDTO libraryDTO;
 

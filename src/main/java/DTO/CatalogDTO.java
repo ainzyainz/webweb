@@ -14,5 +14,6 @@ public class CatalogDTO {
     private long id;
     private String name;
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<GameDTO> gameDTOS;
 }

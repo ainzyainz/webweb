@@ -3,15 +3,10 @@ package DAO.classes;
 
 import DAO.interfaces.GameRequirementsDAO;
 import entities.GameRequirements;
-import entities.User;
-import entities.UserDescription;
-
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static utils.constant.ConstantsContainer.*;
 

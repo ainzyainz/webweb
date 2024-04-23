@@ -7,12 +7,16 @@ import java.util.Set;
 @Builder
 @Getter
 @Setter
-@ToString(exclude = "userDTO")
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class LibraryDTO {
     private long id;
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private UserDTO userDTO;
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<GameDTO> gameDTOSet;
 }
 

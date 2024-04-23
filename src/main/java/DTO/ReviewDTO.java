@@ -3,7 +3,7 @@ package DTO;
 import lombok.*;
 
 @Builder
-@ToString(exclude = "gameDTO")
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -11,6 +11,8 @@ import lombok.*;
 public class ReviewDTO {
     private long id;
     private String reviewText;
+    @ToString.Exclude
     private GameDTO gameDTO;
+    @ToString.Exclude
     private UserDTO userDTO;
 }

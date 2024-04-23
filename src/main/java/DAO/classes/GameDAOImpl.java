@@ -29,6 +29,7 @@ public class GameDAOImpl extends DAOImpl<Game> implements GameDAO {
         return super.getEntityManager();
     }
 
+    @Override
     public Set<Game> getLimited(int x, int y) {
         Query query = getEntityManager().createQuery(FROM_GAME, getEntityClass());
         query.setFirstResult(x);
@@ -43,7 +44,7 @@ public class GameDAOImpl extends DAOImpl<Game> implements GameDAO {
         LOGGER.log(Level.INFO,GET_LIMITED_SUCCESS + x);
         return games;
     }
-
+    @Override
     public Game getGameByName(String name) {
         String query = String.format("%s%s%s", GET_GAME_BY_NAME_QUERY, name, END_QUERY);
         List<Game> games = getEntityManager()
@@ -59,7 +60,7 @@ public class GameDAOImpl extends DAOImpl<Game> implements GameDAO {
                     .orElse(null);
         }
     }
-
+    @Override
     public List<Game> findBySearch(String search) {
         List<Game> list = new ArrayList<>();
         try {
@@ -72,7 +73,7 @@ public class GameDAOImpl extends DAOImpl<Game> implements GameDAO {
         }
         return list;
     }
-
+    @Override
     public List<Game> getAllGames() {
         LOGGER.log(Level.INFO, START_GET_ALL_ENTITY);
         List<Game> list = new ArrayList<>();
@@ -85,7 +86,6 @@ public class GameDAOImpl extends DAOImpl<Game> implements GameDAO {
             LOGGER.log(Level.INFO, LIST_IS_EMPTY);
         }
         LOGGER.log(Level.INFO, GET_ALL_ENTITY_SUCCESS);
-
         return list;
     }
 }

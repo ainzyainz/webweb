@@ -20,17 +20,20 @@ public class ConstantsContainer {
     public static final String BALANCEERROR_URL = "balanceError";
     public static final String ADDFIVE_URL = "addFive";
     public static final String ADDTEN_URL = "addTen";
-    public static final String ADDTWENTY_URL  = "addTwenty";
+    public static final String ADDTWENTY_URL = "addTwenty";
     public static final String ADDFIFTY_URL = "addFifty";
     public static final String ADDGRAND_URL = "addGrand";
     public static final String PROFILE_URL = "profile";
     public static final String CURRENTCATALOG_URL = "currentCatalog";
+    public static final String LIBRARY_URL = "library";
+    public static final String USER_URL = "profile";
 
     public static final String ADMIN_SERVLET = "AdminServlet";
     public static final String STORE_SERVLET = "StoreServlet";
     public static final String GAME_SERVLET = "GameServlet";
     public static final String BALANCE_SERVLET = "BalanceServlet";
     public static final String CATALOG_SERVLET = "CatalogServlet";
+    public static final String USER_SERVLET = "UserServlet";
 
     public static final String GET_ALL_CATALOG_QUERY = "select u from Catalog u";
     public static final String INPUT_MSG_GETGAMEBYGAME = "Incorrect input in getGameByName";
@@ -38,6 +41,7 @@ public class ConstantsContainer {
     public static final String GETALLGAMES_RESULT_LIST_NULL = "ResultList in getAllGames is null";
     public static final String INPUT_MSG_CREATEGAME = "Incorrect input in creategame";
     public static final String PARSE_MSG_CREATEGAME = "Failed creating game. Price is not a number. Typed value = ";
+    public static final String PARSE_MSG_GETLIST = "Failed parsing during getList. Page must be a number.";
     public static final String INCORRECT_PRICE = "Price value cannot be less than 0. Set value = ";
     public static final String INPUT_MSG_GETGAMESBYCATALOG = "Incorrect input in getGamesByCatalog";
     public static final String PARSE_MSG_GETGAMESBYCATALOG = "Failed parsing id in getGamesByCatalog. Typed value = ";
@@ -51,7 +55,17 @@ public class ConstantsContainer {
     public static final String REMOVEFROMBIN_FAILED = "Couldn't remove game from ";
     public static final String REMOVEFROMBIN_SUCCESS = "Removed game from ";
     public static final String INPUT_MSG_REGISTERUSER = "Incorrect input in registerUser";
+    public static final String NULL_MSG_BUYALLFROMBIN = "Failed buying all from bin. User is null.";
+    public static final String EMPTY_BIN_MSG = "Failed buying all games from bin. Empty bin ";
+    public static final String NOT_ENOUGH_BUYALLFROMBIN = "Failed buying all games from bin. Not enough money on account ";
+    public static final String BUYALLFROMBIN_SUCCESS = "Purchased all games from bin ";
+    public static final String PARSE_MSG_BUYGAME = "Failed buying game. Id is not a number.";
+    public static final String NULL_MSG_BUYGAME = "Failed buying game. No game found with id ";
+    public static final String FAILED_BUYGAME = "Failed buying game. User already owns the game ";
+    public static final String SUCCESS_BUYGAME = "User bought a game with name ";
+    public static final String FAIL_BALANCE_GAME = "User has not enough money to buy game ";
     public static final String NULL_MSG_REGISTERUSER = "Failed to register user with email. User already exists. Input email = ";
+    public static final String NULL_MSG_WRITEREVIEW = "Null reviewSet in game. Replacing with empty Hashset";
     public static final String ADDTOBIN_FAILED = "Couldn't add game to bin ";
     public static final String VALIDATE_EMAIL_FAIL = "Email wasn't written correctly. Input email = ";
     public static final String SUCCESS_REGISTERUSER = "Registered a user with email ";
@@ -64,7 +78,6 @@ public class ConstantsContainer {
     public static final String INPUT_MSG_UPDATEUSER = "Incorrect input in updateUser.";
     public static final String ADDTOBIN_SUCCESS = "Added a game to bin ";
     public static final String INPUT_MSG_LOGINUSER = "Incorrect input in loginUser";
-    public static final String NULL_MSG_CLEARBIN = "Failed to find user with email ";
     public static final String INPUT_MSG_REMOVEFROMBIN = "Incorrect input in removeFromBin";
     public static final String PARSE_MSG_REMOVEFROMBIN = "Failed parsing id in removeFromBin. Id is not an number";
     public static final String NULL_MSG_REMOVEFROMBIN = "Removing from bin failed due to user or game being non-existent";
@@ -79,6 +92,8 @@ public class ConstantsContainer {
     public static final String ROLE_MSG = "role";
     public static final String PASSWORD_MSG = "password";
     public static final String SURNAME_MSG = "surname";
+    public static final String TEXT_MSG = "text";
+    public static final String REVIEWS_MSG = "reviews";
     public static final String ADDRESS_MSG = "address";
     public static final String AGE_MSG = "age";
     public static final String CURRENT_MSG = "current";
@@ -142,6 +157,10 @@ public class ConstantsContainer {
     public static final String ACTION_ADDTWENTY = "addTwenty";
     public static final String ACTION_ADDFIFTY = "addFifty";
     public static final String ACTION_ADDGRAND = "addGrand";
+    public static final String ACTION_GETGAME = "getGame";
+    public static final String ACTION_WRITEREVIEW = "writeReview";
+    public static final String ACTION_GETPROFILE = "getProfile";
+    public static final String ACTION_GETLIBRARY = "getLibrary";
 
     public static final String SENDER_EMAIL = "g30656561@gmail.com";
     public static final String APP_PASSWORD = "nslenecxkbpenout";
@@ -152,7 +171,7 @@ public class ConstantsContainer {
     public static final String NO_SUCH_EMAIL = "Incorrect input for address ";
     public static final String READ_FAILED_MSG = "Read failed. Nothing found";
     public static final String READ_SUCCESS_MSG = "Read the entity";
-    public static final String UNKNOWN_ACTION_MSG = "Error calling an unknown action in StoreServlet";
+    public static final String UNKNOWN_ACTION_MSG = "Error calling an unknown action";
     public static final String BUYGAME_FAILED = "User couldn't buy a game ";
     public static final String BUYGAME_SUCCESS = "User bought a game ";
     public static final String UPDATE_FAILED_MSG = "Update failed. Nothing found";
@@ -180,7 +199,7 @@ public class ConstantsContainer {
     public static final String ACTION_GETBIN = "getBin";
     public static final String ACTION_BUYBIN = "buyBin";
     public static final String ACTION_READ = "read";
-    public static final String ACTION_CHANGE = "change";
+    public static final String ACTION_CHANGE = "changeProfile";
     public static final String FAILED_MSG = "failed";
     public static final String GET_USER_BY_EMAIL_QUERY = "select * from user where email = '";
     public static final String GET_GAME_BY_NAME_QUERY = "select * from game where name = '";
@@ -204,8 +223,10 @@ public class ConstantsContainer {
     public static final String AUTH_PROP = "mail.smtp.auth";
     public static final String AUTH_VAL = "true";
     public static final String AUTHPORT_PROP = "mail.smtp.port";
-    public static final String AUTHPORT_VAL  = "465";
+    public static final String AUTHPORT_VAL = "465";
 
+    public static final int PER_PAGE_DEFAULT = 5;
+    public static final int PAGE_DEFAULT = 1;
 
 
     private ConstantsContainer() {

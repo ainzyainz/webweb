@@ -2,8 +2,9 @@ package DAO.interfaces;
 
 import entities.Catalog;
 
+import java.util.List;
 import java.util.Set;
 
 public interface CatalogDAO extends DAO<Catalog> {
-    Set<Catalog> findByName(String name);
+    List<Catalog> getAllCatalogs();
 }

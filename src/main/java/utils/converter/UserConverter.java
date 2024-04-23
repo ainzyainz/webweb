@@ -10,9 +10,7 @@ public class UserConverter {
     private LibraryConverter libraryConverter = new LibraryConverter();
     private BinConverter binConverter = new BinConverter();
 
-    private ReviewConverter reviewConverter = new ReviewConverter();
     private BalanceConverter balanceConverter = new BalanceConverter();
-
     private UserDescConverter userDescConverter = new UserDescConverter();
 
     public User apply(UserDTO userDTO) {
@@ -26,14 +24,6 @@ public class UserConverter {
         Library library = libraryConverter.apply(userDTO.getLibraryDTO());
         library.setUser(user);
         user.setLibrary(library);
-
-        Set<Review> reviewSet = userDTO.getReviewDTOSet()
-                .stream()
-                .map(reviewConverter::apply)
-                .collect(Collectors.toSet());
-
-        reviewSet.forEach(q -> q.setUser(user));
-        user.setReviews(reviewSet);
 
         Bin bin = binConverter.apply(userDTO.getBinDTO());
         bin.setUser(user);
@@ -58,13 +48,6 @@ public class UserConverter {
                 .password(user.getPassword())
                 .build();
 
-        Set<ReviewDTO> reviewDTOSet = user.getReviews()
-                .stream()
-                .map(reviewConverter::applyDTO)
-                .collect(Collectors.toSet());
-
-        reviewDTOSet.forEach(q -> q.setUserDTO(userDTO));
-        userDTO.setReviewDTOSet(reviewDTOSet);
 
 
         LibraryDTO libraryDTO = libraryConverter.applyDTO(user.getLibrary());

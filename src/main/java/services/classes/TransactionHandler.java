@@ -19,7 +19,10 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static utils.constant.ConstantsContainer.*;
+
 public class TransactionHandler implements TransactionInterface {
+
     private final EntityManager entityManager = HibernateUtils.getEntityManager();
     private final UserDAOImpl userDAO = new UserDAOImpl(entityManager);
     private final Logger LOGGER = Logger.getLogger(UserService.class.getName());
@@ -40,15 +43,16 @@ public class TransactionHandler implements TransactionInterface {
         userDTO.getBalanceDTO().setBalance(current + num);
         userDAO.update(user.getId(), user);
     }
+
     @Override
     public boolean buyAllFromBin(UserDTO userDTO) {
-        if (userDTO==null){
-            LOGGER.log(Level.INFO,"User is null");
+        if (userDTO == null) {
+            LOGGER.log(Level.INFO, NULL_MSG_BUYALLFROMBIN);
             return false;
         }
         BinDTO binDTO = userDTO.getBinDTO();
-        if (binDTO.getGameDTOSet().isEmpty()){
-            LOGGER.log(Level.INFO,userDTO.getEmail()+" bin is empty.");
+        if (binDTO.getGameDTOSet().isEmpty()) {
+            LOGGER.log(Level.INFO, EMPTY_BIN_MSG + userDTO.getEmail());
             return false;
         }
 
@@ -60,43 +64,44 @@ public class TransactionHandler implements TransactionInterface {
                 userDTO.getLibraryDTO().getGameDTOSet().add(temp);
             }
             if (userDAO.checkBalance(userBalance, total) == 0) {
-                LOGGER.log(Level.INFO, "User " + userDTO.getEmail() + " has not enough money to buy all games from bin");
+                LOGGER.log(Level.INFO, NOT_ENOUGH_BUYALLFROMBIN + userDTO.getEmail());
                 return null;
             }
             User user = userDAO.read(userDTO.getId());
             fromBalance(user, total);
             Bin bin = user.getBin();
-            LOGGER.log(Level.INFO, "User " + userDTO.getEmail() + "purchased all games from bin");
+            LOGGER.log(Level.INFO, BUYALLFROMBIN_SUCCESS + userDTO.getEmail());
 
             for (Game game : bin.getGames()) {
                 game.getStats().setPurchaseCounter(game.getStats().getPurchaseCounter() + 1);
                 game.getLibraries().add(user.getLibrary());
                 game.getBins().remove(bin);
                 user.getLibrary().getGames().add(game);
-                gameDAO.update(game.getId(),game);
+                gameDAO.update(game.getId(), game);
             }
 
             user.getBin().getGames().clear();
             userDTO.getBinDTO().getGameDTOSet().clear();
-            userDAO.update(user.getId(),user);
+            userDAO.update(user.getId(), user);
             return userDTO;
         };
-        return UtilsInterface.superMethodInterface(betweenBeginAndCommited,entityManager) != null;
+        return UtilsInterface.superMethodInterface(betweenBeginAndCommited, entityManager) != null;
     }
+
     @Override
     public boolean buyGame(String game_id, UserDTO userDTO) {
         int id;
-        try{
+        try {
             id = Integer.parseInt(game_id);
-        }catch (NumberFormatException e){
-            LOGGER.log(Level.INFO,"Id is not a number");
+        } catch (NumberFormatException e) {
+            LOGGER.log(Level.INFO, PARSE_MSG_BUYGAME);
             return false;
         }
 
         double userBalance = userDTO.getBalanceDTO().getBalance();
         Game game = gameDAO.read(id);
-        if (game==null){
-            LOGGER.log(Level.INFO,"No game found");
+        if (game == null) {
+            LOGGER.log(Level.INFO, NULL_MSG_BUYGAME + game_id);
             return false;
         }
         double price = game.getStats().getPrice();
@@ -107,8 +112,8 @@ public class TransactionHandler implements TransactionInterface {
             game.getStats().setPurchaseCounter(game.getStats().getPurchaseCounter() + 1);
             game.getLibraries().add(user.getLibrary());
 
-            if(user.getLibrary().getGames().size()==userDTO.getLibraryDTO().getGameDTOSet().size()){
-                LOGGER.log(Level.INFO,"User already owns the game");
+            if (user.getLibrary().getGames().size() == userDTO.getLibraryDTO().getGameDTOSet().size()) {
+                LOGGER.log(Level.INFO, FAILED_BUYGAME + game.getName());
                 return false;
             }
             GameDTO gameDTO = gameConverter.applyDTO(game);
@@ -117,12 +122,10 @@ public class TransactionHandler implements TransactionInterface {
             userDAO.update(user.getId(), user);
             gameDAO.update(game.getId(), game);
 
-            LOGGER.log(Level.INFO, "User " + userDTO.getEmail() + " bought a game "+game.getName());
+            LOGGER.log(Level.INFO, SUCCESS_BUYGAME + game.getName());
             return true;
         }
-        LOGGER.log(Level.INFO, "User " + userDTO + " has not enough money");
+        LOGGER.log(Level.INFO, FAIL_BALANCE_GAME + game.getName());
         return false;
     }
-
-
 }

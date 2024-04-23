@@ -15,7 +15,6 @@ import static utils.constant.ConstantsContainer.*;
 public class UserDescriptionDAOImpl extends DAOImpl<UserDescription> implements UserDescriptionDAO {
 
     private final Logger LOGGER = Logger.getLogger(UserDescriptionDAOImpl.class.getName());
-    private int noOfRecords;
 
     public UserDescriptionDAOImpl(EntityManager entityManager) {
         super(entityManager);

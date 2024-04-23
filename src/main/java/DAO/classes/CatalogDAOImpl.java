@@ -28,12 +28,7 @@ public class CatalogDAOImpl extends DAOImpl<Catalog> implements CatalogDAO {
         return super.getEntityManager();
     }
 
-
     @Override
-    public Set<Catalog> findByName(String name) {
-        return new HashSet<>(getEntityManager().createQuery(FIND_BY_NAME, Catalog.class).setParameter("value", name).getResultList());
-    }
-
     public List<Catalog> getAllCatalogs() {
         LOGGER.log(Level.INFO, START_GET_ALL_ENTITY);
         List<Catalog> list = new ArrayList<>();

@@ -23,10 +23,10 @@
     <a class="balance" href="balance?action=addFifty">Add 50</a>
     <a class="balance" href="balance?action=addGrand">Add 100</a>
 
-    <form action="mainPage" method="get">
+    <form action="profile" method="get">
         <div class="input-box">
             <input type="hidden" name="id" value="<%=user.getId()%>">
-            <input type="hidden" name="action" value="change">
+            <input type="hidden" name="action" value="changeProfile">
             <p>name:</p>
             <input class="input-field" type="text" name="name" placeholder="<%=user.getUserDescriptionDTO().getName()%>">
         </div>

@@ -7,6 +7,7 @@ import DTO.*;
 import entities.*;
 import services.interfaces.UserServiceInterface;
 import utils.converter.GameConverter;
+import utils.converter.ReviewConverter;
 import utils.converter.UserConverter;
 import utils.functionalinterface.MyInterfaceToDAO;
 import utils.functionalinterface.UtilsInterface;
@@ -29,7 +30,7 @@ public class UserService implements UserServiceInterface {
     private final Logger LOGGER = Logger.getLogger(UserService.class.getName());
     private final GameConverter gameConverter = new GameConverter();
     private final UserConverter userConverter = new UserConverter();
-
+    private final ReviewConverter reviewConverter = new ReviewConverter();
     private final ReviewDAO reviewDAO = new ReviewDAOImpl(entityManager);
     private final GameDAO gameDAO = new GameDAOImpl(entityManager);
 
@@ -40,9 +41,11 @@ public class UserService implements UserServiceInterface {
             LOGGER.log(Level.INFO, WRITEREVIEW_INPUT_MSG);
             return false;
         }
-        MyInterfaceToDAO<Review> betweenBeginAndCommit = () -> {
+        MyInterfaceToDAO<ReviewDTO> betweenBeginAndCommit = () -> {
+
             User user = userDAO.read(userDTO.getId());
             Game game = gameDAO.read(gameDTO.getId());
+
             if (user == null || game == null) {
                 LOGGER.log(Level.INFO, WRITEREVIEW_NULL_MSG);
                 return null;
@@ -59,11 +62,10 @@ public class UserService implements UserServiceInterface {
             reviewDAO.create(review);
             userDAO.update(user.getId(), user);
             gameDAO.update(game.getId(), game);
-
             LOGGER.log(Level.INFO, WRITEREVIEW_SUCCESS + userDTO.getEmail());
-            return review;
+            return reviewConverter.applyDTO(review);
         };
-        Review result = UtilsInterface.superMethodInterface(betweenBeginAndCommit, entityManager);
+        ReviewDTO result = UtilsInterface.superMethodInterface(betweenBeginAndCommit, entityManager);
         return result != null;
     }
 
@@ -77,7 +79,7 @@ public class UserService implements UserServiceInterface {
             List<User> users = userDAO.getUserByEmailAndPassword(email, password);
             return users == null ? null :
                     users.stream()
-                    .findFirst().orElse(null);
+                            .findFirst().orElse(null);
         };
         User user = UtilsInterface.superMethodInterface(betweenBeginAndCommited, entityManager);
         return user != null ? userConverter.applyDTO(user) : null;
@@ -96,7 +98,7 @@ public class UserService implements UserServiceInterface {
         };
         return UtilsInterface.superMethodInterface(betweenBeginAndCommited, entityManager);
     }
-
+    @Override
     public boolean removeFromBin(String game_id, UserDTO userDTO) {
         if (game_id.isBlank() || userDTO == null) {
             LOGGER.log(Level.INFO, INPUT_MSG_REMOVEFROMBIN);
@@ -169,6 +171,21 @@ public class UserService implements UserServiceInterface {
             return true;
         };
         return UtilsInterface.superMethodInterface(betweenBeginAndCommited, entityManager);
+    }
+    @Override
+    public Set<GameDTO> getLibraryGames(UserDTO userDTO){
+        if (userDTO==null){
+            LOGGER.log(Level.INFO,"Incorrect input in getLibraryGames. User is null");
+            return null;
+        }
+        MyInterfaceToDAO<Set<Game>> betweenBeginAndCommited = () -> {
+            User user = userDAO.read(userDTO.getId());
+            return user.getLibrary().getGames();
+        };
+        Set<Game> games = UtilsInterface.superMethodInterface(betweenBeginAndCommited,entityManager);
+        Set<GameDTO> gameDTOSet = new HashSet<>();
+        games.stream().map(gameConverter::applyDTO).forEach(gameDTOSet::add);
+        return gameDTOSet;
     }
 
     @Override

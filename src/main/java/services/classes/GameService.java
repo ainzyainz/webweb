@@ -3,14 +3,19 @@ package services.classes;
 import DAO.classes.CatalogDAOImpl;
 import DAO.classes.GameDAOImpl;
 import DAO.classes.GameRequirementsDAOImpl;
+import DAO.classes.UserDAOImpl;
 import DAO.interfaces.GameRequirementsDAO;
+import DAO.interfaces.UserDAO;
 import DTO.CatalogDTO;
 import DTO.GameDTO;
+import DTO.ReviewDTO;
+import DTO.UserDTO;
 import entities.*;
 import services.interfaces.GameServiceInterface;
 import utils.converter.CatalogConverter;
 import utils.converter.GameConverter;
 import utils.converter.GameReqsConverter;
+import utils.converter.ReviewConverter;
 import utils.functionalinterface.MyInterfaceToDAO;
 import utils.functionalinterface.UtilsInterface;
 import utils.hibernate.HibernateUtils;
@@ -33,6 +38,8 @@ public class GameService implements GameServiceInterface {
     private final GameConverter gameConverter = new GameConverter();
     private final CatalogConverter catalogConverter = new CatalogConverter();
     private final CatalogDAOImpl catalogDAO = new CatalogDAOImpl(entityManager);
+    private final ReviewConverter reviewConverter = new ReviewConverter();
+    private final UserDAO userDAO = new UserDAOImpl(entityManager);
 
     @Override
     public Set<GameDTO> searchGame(String search) {
@@ -139,6 +146,42 @@ public class GameService implements GameServiceInterface {
     }
 
     @Override
+    public Set<ReviewDTO> getGameReviews(GameDTO gameDTO) {
+        if (gameDTO == null) {
+            LOGGER.log(Level.INFO, "Incorrect input in getGameReviews. Game is null");
+            return null;
+        }
+        MyInterfaceToDAO<Set<Review>> betweenBeginAndCommited = () -> {
+            Game game = gameDAO.read(gameDTO.getId());
+            return game.getReviews();
+        };
+        Set<Review> reviews = UtilsInterface.superMethodInterface(betweenBeginAndCommited, entityManager);
+        Set<ReviewDTO> reviewDTOSet = new HashSet<>();
+        reviews.stream().map(reviewConverter::applyDTO).forEach(reviewDTOSet::add);
+        return reviewDTOSet;
+    }
+
+    @Override
+    public GameDTO findById(String game_id) {
+        if (game_id.isBlank()) {
+            LOGGER.log(Level.INFO, "Failed to find a game. Incorrect input in findById.");
+            return null;
+        }
+        MyInterfaceToDAO<Game> betweenBeginAndCommited = () -> {
+            long id;
+            try {
+                id = Long.parseLong(game_id);
+            } catch (NumberFormatException e) {
+                LOGGER.log(Level.INFO, "Failed to parse value in findById. ID must be a number");
+                return null;
+            }
+            return gameDAO.read(id);
+        };
+        Game game = UtilsInterface.superMethodInterface(betweenBeginAndCommited, entityManager);
+        return game != null ? gameConverter.applyDTO(game) : null;
+    }
+
+    @Override
     public Set<CatalogDTO> getAllCatalogs() {
         MyInterfaceToDAO<List<Catalog>> betweenBeginAndCommitted = catalogDAO::getAllCatalogs;
         List<Catalog> catalogs = UtilsInterface.superMethodInterface(betweenBeginAndCommitted, entityManager);
@@ -173,11 +216,13 @@ public class GameService implements GameServiceInterface {
 
     @Override
     public Set<GameDTO> getGamesLimited(int x, int y) {
-        if (x < 0 || y < 0) {
-            LOGGER.log(Level.INFO, INPUT_MSG_GETGAMESLIMITED + x + ",", +y);
+        int start = (x - 1) * y;
+        int amount = y;
+        if (start < 0 || amount < 0) {
+            LOGGER.log(Level.INFO, INPUT_MSG_GETGAMESLIMITED + amount);
             return new HashSet<>();
         }
-        MyInterfaceToDAO<Set<Game>> betweenBeginAndCommit = () -> gameDAO.getLimited(x, y);
+        MyInterfaceToDAO<Set<Game>> betweenBeginAndCommit = () -> gameDAO.getLimited(start, amount);
         Set<Game> resultSet = UtilsInterface.superMethodInterface(betweenBeginAndCommit, entityManager);
         Set<GameDTO> gameDTOSet = new HashSet<>();
         resultSet.stream().map(gameConverter::applyDTO).forEach(gameDTOSet::add);

@@ -26,8 +26,8 @@
                     <input type="text" class="input-field" name="search" placeholder="Search...">
                 </form>
             </li>
-            <li><a href="library.jsp" class="link">Library</a></li>
-            <li><a href="profile.jsp" class="link"><%=user.getUserDescriptionDTO().getName()%></a></li>
+            <li><a href="profile?action=getLibrary" class="link">Library</a></li>
+            <li><a href="profile?action=getProfile" class="link"><%=user.getUserDescriptionDTO().getName()%></a></li>
             <li class="nav-button">
                 <button class="btn white-btn" id="loginBtn" onclick="location.href='signUp.jsp';">Exit Profile</button>
             </li>

@@ -5,7 +5,7 @@ import lombok.*;
 @Builder
 @Getter
 @Setter
-@ToString(exclude = "userDTO")
+@ToString
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,5 +21,7 @@ public class UserDescriptionDTO {
 
     private int age;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private UserDTO userDTO;
 }

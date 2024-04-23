@@ -5,6 +5,7 @@
                 <constraints primaryKey="true" nullable="false" unique="true"/>
             </column>
             <column name="name" type="varchar(200)"/>
+            <column name="desc" type="varchar(200)"/>
             <column name="game_recs_id" type="int">
                 <constraints nullable="false" foreignKeyName="game_reqs" references="game_reqs(id)"/>
             </column>

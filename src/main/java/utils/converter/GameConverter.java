@@ -3,6 +3,7 @@ package utils.converter;
 import DTO.*;
 import entities.*;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -12,12 +13,11 @@ public class GameConverter {
     private GameStatsConverter gameStatsConverter = new GameStatsConverter();
     private CatalogConverter catalogConverter = new CatalogConverter();
 
-    private ReviewConverter reviewConverter = new ReviewConverter();
-
-    public Game apply(GameDTO gameDTO){
+    public Game apply(GameDTO gameDTO) {
         Game game = Game.builder()
                 .id(gameDTO.getId())
                 .name(gameDTO.getName())
+                .reviews(new HashSet<>())
                 .build();
         GameRequirements gameRequirements = gameReqsConverter.apply(gameDTO.getGameRequirementsDTO());
         gameRequirements.setGame(game);
@@ -37,11 +37,15 @@ public class GameConverter {
 
         return game;
     }
-    public GameDTO applyDTO(Game game){
+
+    public GameDTO applyDTO(Game game) {
+
         GameDTO gameDTO = GameDTO.builder()
                 .id(game.getId())
+                .reviewDTOSet(new HashSet<>())
                 .name(game.getName())
                 .build();
+
         GameRequirementsDTO gameRequirementsDTO = gameReqsConverter.applyDTO(game.getReqs());
         gameRequirementsDTO.setGameDTO(gameDTO);
         gameDTO.setGameRequirementsDTO(gameRequirementsDTO);
@@ -50,22 +54,12 @@ public class GameConverter {
         gameStatisticsDTO.setGameDTO(gameDTO);
         gameDTO.setGameStatisticsDTO(gameStatisticsDTO);
 
-
-
         Set<CatalogDTO> catalogSet = game.getCatalogs()
                 .stream()
                 .map(catalogConverter::applyDTO)
                 .collect(Collectors.toSet());
 
-        Set<ReviewDTO> reviewSet = game.getReviews()
-                .stream()
-                .map(reviewConverter::applyDTO)
-                .collect(Collectors.toSet());
-
-        reviewSet.forEach(q -> q.setGameDTO(gameDTO));
         catalogSet.forEach(q -> q.getGameDTOS().add(gameDTO));
-
-        gameDTO.setReviewDTOSet(reviewSet);
         gameDTO.setCatalogDTOSet(catalogSet);
 
         return gameDTO;

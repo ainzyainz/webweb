@@ -1,9 +1,7 @@
 package filters;
 
 import DTO.UserDTO;
-import entities.User;
 import utils.roles.Roles;
-
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
