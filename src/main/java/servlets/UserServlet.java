@@ -4,6 +4,7 @@ import DTO.GameDTO;
 import DTO.UserDTO;
 import services.classes.GameService;
 import services.classes.UserService;
+import utils.hibernate.HibernateUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -41,6 +42,9 @@ public class UserServlet extends HttpServlet {
             case ACTION_GETLIBRARY:
                 getLibrary(req, resp);
                 break;
+            case ACTION_EXIT:
+                exitProfile(req, resp);
+                break;
             default:
                 LOGGER.log(Level.INFO, "Invalid action input in userServlet");
                 resp.sendRedirect("unknownAction.jsp");
@@ -49,6 +53,15 @@ public class UserServlet extends HttpServlet {
 
     public void getProfile(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         req.getRequestDispatcher("/profile.jsp").forward(req, resp);
+    }
+
+    public void exitProfile(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        HibernateUtils.closeEntityManager();
+        req.getSession().setAttribute(CURRENT_MSG, null);
+        req.getSession().setAttribute(PASSWORD_MSG, null);
+        req.getSession().setAttribute(EMAIL_MSG, null);
+        req.getSession().setAttribute(ROLE_MSG, null);
+        resp.sendRedirect("signIn");
     }
 
     public void changeProfile(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
@@ -62,24 +75,9 @@ public class UserServlet extends HttpServlet {
     }
 
     public void getLibrary(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        int page = PAGE_DEFAULT;
-        int perPage = PER_PAGE_DEFAULT;
         UserDTO current = (UserDTO) req.getSession().getAttribute("current");
-        String currentPage = req.getParameter(PAGE_MSG);
-        int intPage;
-        if (currentPage != null) {
-            try {
-                intPage = Integer.parseInt(currentPage);
-                perPage = intPage;
-            } catch (NumberFormatException e) {
-                LOGGER.log(Level.INFO, PARSE_MSG_GETLIST);
-            }
-        }
-        int pages = gameService.getNoOfPages(perPage);
         Set<GameDTO> libraryGames = userService.getLibraryGames(current);
-        req.setAttribute(NOOFPAGES_MSG, pages);
         req.setAttribute(GAMES_MSG, libraryGames);
-        req.setAttribute(CURRENTPAGE_MSG, page);
         req.getRequestDispatcher(LIBRARY_URL + JSP).forward(req, resp);
     }
 }

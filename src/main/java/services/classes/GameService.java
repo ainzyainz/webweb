@@ -21,6 +21,7 @@ import utils.functionalinterface.UtilsInterface;
 import utils.hibernate.HibernateUtils;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,8 +44,8 @@ public class GameService implements GameServiceInterface {
 
     @Override
     public Set<GameDTO> searchGame(String search) {
-        MyInterfaceToDAO<Set<Game>> betwenBeginAndCommited = () -> {
-            Set<Game> gameSet = new HashSet<>();
+        MyInterfaceToDAO<List<Game>> betwenBeginAndCommited = () -> {
+            List<Game> gameSet = new ArrayList<>();
 
             gameDAO.findBySearch(search)
                     .forEach(gameSet::add);
@@ -54,7 +55,7 @@ public class GameService implements GameServiceInterface {
 
             return gameSet;
         };
-        Set<Game> games = UtilsInterface.superMethodInterface(betwenBeginAndCommited, entityManager);
+        List<Game> games = UtilsInterface.superMethodInterface(betwenBeginAndCommited, entityManager);
         return games.stream().map(gameConverter::applyDTO).collect(Collectors.toSet());
     }
 
@@ -213,13 +214,27 @@ public class GameService implements GameServiceInterface {
                 .map(gameConverter::applyDTO)
                 .collect(Collectors.toSet());
     }
-
+    public Set<GameDTO> getLimited(List<GameDTO> list, int x, int y) {
+        if (x < 0 || y < 0) {
+            LOGGER.log(Level.INFO, INPUT_MSG_GETGAMESLIMITED + y);
+            return new HashSet<>();
+        }
+        Set<GameDTO> result = new HashSet<>();
+        for (int i = (x - 1) * y; i < y * x; i++) {
+            if (i < list.size()) {
+                result.add(list.get(i));
+            } else {
+                break;
+            }
+        }
+        return result;
+    }
     @Override
     public Set<GameDTO> getGamesLimited(int x, int y) {
-        int start = (x - 1) * y;
+        int start = (x-1)*y;
         int amount = y;
         if (start < 0 || amount < 0) {
-            LOGGER.log(Level.INFO, INPUT_MSG_GETGAMESLIMITED + amount);
+            LOGGER.log(Level.INFO, INPUT_MSG_GETGAMESLIMITED + y);
             return new HashSet<>();
         }
         MyInterfaceToDAO<Set<Game>> betweenBeginAndCommit = () -> gameDAO.getLimited(start, amount);

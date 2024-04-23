@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 import static utils.constant.ConstantsContainer.*;
 
 public class UserService implements UserServiceInterface {
-    private final EntityManager entityManager = HibernateUtils.getEntityManager();
+    private EntityManager entityManager = HibernateUtils.getEntityManager();
     private final UserDAOImpl userDAO = new UserDAOImpl(entityManager);
     private final UserDescriptionDAOImpl userDescriptionDAO = new UserDescriptionDAOImpl(entityManager);
     private final Logger LOGGER = Logger.getLogger(UserService.class.getName());
@@ -71,6 +71,7 @@ public class UserService implements UserServiceInterface {
 
     @Override
     public UserDTO loginUser(String email, String password) {
+        System.out.println("loginuser" + entityManager.isOpen());
         if (email.isBlank() || password.isBlank()) {
             LOGGER.log(Level.INFO, INPUT_MSG_LOGINUSER);
             return null;
@@ -174,7 +175,7 @@ public class UserService implements UserServiceInterface {
     }
     @Override
     public Set<GameDTO> getLibraryGames(UserDTO userDTO){
-        if (userDTO==null){
+         if (userDTO==null){
             LOGGER.log(Level.INFO,"Incorrect input in getLibraryGames. User is null");
             return null;
         }

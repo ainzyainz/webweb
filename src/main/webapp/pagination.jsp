@@ -11,12 +11,12 @@
     <title>Title</title>
 </head>
 <body>
-<%int currentPage = (int) request.getSession().getAttribute("currentPage");
-    int noOfPages = (int) request.getSession().getAttribute("noOfPages");
+<%int currentPage = (int) request.getAttribute("currentPage");
+    int noOfPages = (int) request.getAttribute("noOfPages");
     if (currentPage != 1) {
 %>
 <td style="display: inline-block">
-    <a href="mainPage?page=<%=currentPage-1%>">Previous</a>
+    <a href="mainPage?currentPage=<%=currentPage-1%>">Previous</a>
 </td>
 <%} %>
 
@@ -30,7 +30,7 @@
 
 <% } else {%>
 
-<a href="mainPage?page=<%=i%>"><%=i%></a>
+<a href="mainPage?currentPage=<%=i%>"><%=i%></a>
 
 <%
         }
@@ -38,20 +38,20 @@
 } else {
 %>
 
-<a href="mainPage?page=1">1</a>
-<a href="mainPage?page=2">1</a>
+<a href="mainPage?currentPage=1">1</a>
+<a href="mainPage?currentPage=2">1</a>
 
 <p><%=currentPage%></p>
 
 
 
-<a href="mainPage?page=<%=noOfPages-1%>"><%=noOfPages-1%></a>
-<a href="mainPage?page=<%=noOfPages%>"><%=noOfPages%></a>
+<a href="mainPage?currentPage=<%=noOfPages-1%>"><%=noOfPages-1%></a>
+<a href="mainPage?currentPage=<%=noOfPages%>"><%=noOfPages%></a>
 <% }
 
     if (currentPage < noOfPages) {
 %>
-<a href="mainPage?page=<%=currentPage+1%>">Next</a>
+<a href="mainPage?currentPage=<%=currentPage+1%>">Next</a>
 <% }%>
 
 </body>

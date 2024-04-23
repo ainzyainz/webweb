@@ -11,10 +11,11 @@ public class HibernateUtils {
             createEntityManagerFactory("via");
 
     public static EntityManager getEntityManager() {
-
         return ENTITY_MANAGER_FACTORY.createEntityManager();
     }
-
+    public static void closeEntityManager(){
+        ENTITY_MANAGER_FACTORY.createEntityManager().close();
+    }
     public static void close() {
         ENTITY_MANAGER_FACTORY.close();
     }

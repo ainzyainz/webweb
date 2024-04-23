@@ -24,9 +24,6 @@ public class Game {
     @Column
     private String name;
 
-    @Column
-    private String desc;
-
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

@@ -101,7 +101,7 @@ public class ConstantsContainer {
     public static final String CATALOGS_MSG = "catalogs";
     public static final String CATALOGID_MSG = "catalog_id";
     public static final String GAMES_MSG = "games";
-    public static final String PAGE_MSG = "page";
+    public static final String PAGE_MSG = "currentPage";
     public static final String USERS_MSG = "users";
     public static final String CODE_MSG = "code";
     public static final String INPUTCODE_MSG = "inputCode";
@@ -140,6 +140,7 @@ public class ConstantsContainer {
     public static final String GET_SEARCH_USER = "from User where email = :value";
     public static final String INPUT_MSG_ADDTOCATALOG = "Catalog id input is incorrect. Typed values = ";
     public static final String GET_SEARCH_GAME = "from Game where name = :value";
+    public static final String FROM_LIBRARY = "from game_library where library_id = :value";
     public static final String GET_SEARCH_GAME_REQS = "from GameRequirements where OS = :value or memory = :value or graphics = :value or directX = :value or storage = :value or processor = :value";
     public static final String FROM_GAME = "from Game";
     public static final String PARSE_MSG_UPDATEGAME = "Failed parsing id in updateGame. Typed values(id,price) = ";
@@ -161,7 +162,7 @@ public class ConstantsContainer {
     public static final String ACTION_WRITEREVIEW = "writeReview";
     public static final String ACTION_GETPROFILE = "getProfile";
     public static final String ACTION_GETLIBRARY = "getLibrary";
-
+    public static final String ACTION_EXIT = "exit";
     public static final String SENDER_EMAIL = "g30656561@gmail.com";
     public static final String APP_PASSWORD = "nslenecxkbpenout";
 

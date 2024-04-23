@@ -15,7 +15,7 @@ public class GameDTO {
 
     private long id;
     private String name;
-    private String desc;
+
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

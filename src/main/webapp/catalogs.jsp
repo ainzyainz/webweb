@@ -14,7 +14,7 @@
 </head>
 <body>
 <%
-     Set<CatalogDTO> catalogDTOSet = (Set<CatalogDTO>) request.getSession().getAttribute("catalogs");
+     Set<CatalogDTO> catalogDTOSet = (Set<CatalogDTO>) request.getAttribute("catalogs");
 
     for (CatalogDTO temp : catalogDTOSet) { %>
 

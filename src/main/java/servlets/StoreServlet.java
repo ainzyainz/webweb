@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,8 +62,8 @@ public class StoreServlet extends HttpServlet {
     public void readGame(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String search = req.getParameter(SEARCH_MSG);
         Set<CatalogDTO> catalogDTOSet = gameService.getAllCatalogs();
-        req.getSession().setAttribute(CATALOGS_MSG, catalogDTOSet);
-        req.getSession().setAttribute(GAMES_MSG, gameService.searchGame(search));
+        req.setAttribute(CATALOGS_MSG,catalogDTOSet);
+        req.setAttribute(GAMES_MSG, gameService.searchGame(search));
         req.getRequestDispatcher(DASH + MAINPAGE_URL + JSP).forward(req, resp);
     }
 
@@ -132,7 +133,7 @@ public class StoreServlet extends HttpServlet {
         if (currentPage != null) {
             try {
                 intPage = Integer.parseInt(currentPage);
-                perPage = intPage;
+                page = intPage;
             } catch (NumberFormatException e) {
                 LOGGER.log(Level.INFO, "Failed parsing during getList. Page must be a number");
             }

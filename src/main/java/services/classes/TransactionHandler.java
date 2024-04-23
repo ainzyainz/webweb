@@ -59,13 +59,13 @@ public class TransactionHandler implements TransactionInterface {
         MyInterfaceToDAO<UserDTO> betweenBeginAndCommited = () -> {
             double userBalance = userDTO.getBalanceDTO().getBalance();
             double total = 0;
+            if (!userDAO.checkBalance(userBalance, total)) {
+                LOGGER.log(Level.INFO, NOT_ENOUGH_BUYALLFROMBIN + userDTO.getEmail());
+                return null;
+            }
             for (GameDTO temp : binDTO.getGameDTOSet()) {
                 total += temp.getGameStatisticsDTO().getPrice();
                 userDTO.getLibraryDTO().getGameDTOSet().add(temp);
-            }
-            if (userDAO.checkBalance(userBalance, total) == 0) {
-                LOGGER.log(Level.INFO, NOT_ENOUGH_BUYALLFROMBIN + userDTO.getEmail());
-                return null;
             }
             User user = userDAO.read(userDTO.getId());
             fromBalance(user, total);
@@ -83,6 +83,7 @@ public class TransactionHandler implements TransactionInterface {
             user.getBin().getGames().clear();
             userDTO.getBinDTO().getGameDTOSet().clear();
             userDAO.update(user.getId(), user);
+            userDTO.getBalanceDTO().setBalance(userBalance-total);
             return userDTO;
         };
         return UtilsInterface.superMethodInterface(betweenBeginAndCommited, entityManager) != null;
@@ -97,35 +98,39 @@ public class TransactionHandler implements TransactionInterface {
             LOGGER.log(Level.INFO, PARSE_MSG_BUYGAME);
             return false;
         }
-
         double userBalance = userDTO.getBalanceDTO().getBalance();
-        Game game = gameDAO.read(id);
-        if (game == null) {
-            LOGGER.log(Level.INFO, NULL_MSG_BUYGAME + game_id);
-            return false;
-        }
-        double price = game.getStats().getPrice();
-        if (userDAO.checkBalance(userBalance, price) == 1) {
-            User user = userDAO.read(userDTO.getId());
-            fromBalance(user, price);
-            user.getLibrary().getGames().add(game);
-            game.getStats().setPurchaseCounter(game.getStats().getPurchaseCounter() + 1);
-            game.getLibraries().add(user.getLibrary());
-
-            if (user.getLibrary().getGames().size() == userDTO.getLibraryDTO().getGameDTOSet().size()) {
-                LOGGER.log(Level.INFO, FAILED_BUYGAME + game.getName());
-                return false;
+        MyInterfaceToDAO<UserDTO> betweenBeginAndCommited = () -> {
+            Game game = gameDAO.read(id);
+            if (game == null) {
+                LOGGER.log(Level.INFO, NULL_MSG_BUYGAME + game_id);
+                return null;
             }
-            GameDTO gameDTO = gameConverter.applyDTO(game);
-            userDTO.getLibraryDTO().getGameDTOSet().add(gameDTO);
+            double price = game.getStats().getPrice();
+            if (userDAO.checkBalance(userBalance, price)) {
+                User user = userDAO.read(userDTO.getId());
+                fromBalance(user, price);
+                user.getLibrary().getGames().add(game);
+                game.getStats().setPurchaseCounter(game.getStats().getPurchaseCounter() + 1);
+                game.getLibraries().add(user.getLibrary());
 
-            userDAO.update(user.getId(), user);
-            gameDAO.update(game.getId(), game);
+                if (user.getLibrary().getGames().size() == userDTO.getLibraryDTO().getGameDTOSet().size()) {
+                    LOGGER.log(Level.INFO, FAILED_BUYGAME + game.getName());
+                    return null;
+                }
+                GameDTO gameDTO = gameConverter.applyDTO(game);
+                userDTO.getLibraryDTO().getGameDTOSet().add(gameDTO);
 
-            LOGGER.log(Level.INFO, SUCCESS_BUYGAME + game.getName());
-            return true;
-        }
-        LOGGER.log(Level.INFO, FAIL_BALANCE_GAME + game.getName());
-        return false;
+                userDAO.update(user.getId(), user);
+                gameDAO.update(game.getId(), game);
+
+                LOGGER.log(Level.INFO, SUCCESS_BUYGAME + game.getName());
+                userDTO.getBalanceDTO().setBalance(userBalance - price);
+                LOGGER.log(Level.INFO, FAIL_BALANCE_GAME + game.getName());
+                return userDTO;
+            }
+            return null;
+        };
+        UserDTO user = UtilsInterface.superMethodInterface(betweenBeginAndCommited,entityManager);
+        return user != null;
     }
 }

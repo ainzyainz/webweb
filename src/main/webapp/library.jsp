@@ -38,9 +38,9 @@
 <body>
 <link rel="stylesheet" type="text/css" href="style1.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<div class="main">
-                <jsp:include page="header.jsp"/>
-
+<jsp:include page="header.jsp"/>
+<a>My Library</a>
+<div class="adminMain">
     <div class="list-div">
         <table>
             <thead>
@@ -59,9 +59,7 @@
             </td>
             <% }%>
             </tbody>
-
         </table>
     </div>
-
 </div>
 </body>

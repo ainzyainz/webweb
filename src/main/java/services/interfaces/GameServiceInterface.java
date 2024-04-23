@@ -4,6 +4,7 @@ import DTO.CatalogDTO;
 import DTO.GameDTO;
 import DTO.ReviewDTO;
 
+import java.util.List;
 import java.util.Set;
 
 public interface GameServiceInterface {
