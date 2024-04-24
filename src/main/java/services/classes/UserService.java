@@ -34,6 +34,11 @@ public class UserService implements UserServiceInterface {
     private final ReviewDAO reviewDAO = new ReviewDAOImpl(entityManager);
     private final GameDAO gameDAO = new GameDAOImpl(entityManager);
 
+    public int getNoOfPages(int perPage, UserDTO userDTO){
+        User user = userDAO.read(userDTO.getId());
+        int total = user.getLibrary().getGames().size();
+        return (int) Math.ceil(total * 1.0 / perPage);
+    }
     @Override
     public boolean writeReview(String text, UserDTO userDTO,
                                GameDTO gameDTO) {

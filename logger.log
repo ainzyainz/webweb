@@ -11329,3 +11329,27 @@ Caused by: java.sql.SQLException: Referencing column 'user_id' and referenced co
 [ INFO ] - org.hibernate.dialect.Dialect:175 - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
 [ INFO ] - org.hibernate.orm.connections.access:48 - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@5d878b25] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
 [ INFO ] - org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+[ INFO ] - org.hibernate.jpa.internal.util.LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: via]
+[ INFO ] - org.hibernate.Version:44 - HHH000412: Hibernate ORM core version 5.6.7.Final
+[ INFO ] - org.hibernate.annotations.common.Version:56 - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+[ WARN ] - org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+[ INFO ] - org.hibernate.orm.connections.pooling:115 - HHH10001005: using driver [com.mysql.cj.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/webapp?createDatabaseIfNotExist=true]
+[ INFO ] - org.hibernate.orm.connections.pooling:124 - HHH10001001: Connection properties: {password=****, user=root}
+[ INFO ] - org.hibernate.orm.connections.pooling:129 - HHH10001003: Autocommit mode: false
+[ INFO ] - org.hibernate.orm.connections.pooling:134 - HHH10001007: JDBC isolation level: READ_COMMITTED
+[ INFO ] - org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl:274 - HHH000115: Hibernate connection pool size: 10 (min=1)
+[ INFO ] - org.hibernate.dialect.Dialect:175 - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+[ INFO ] - org.hibernate.orm.connections.access:48 - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@337a6d30] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+[ INFO ] - org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+[ INFO ] - org.hibernate.jpa.internal.util.LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: via]
+[ INFO ] - org.hibernate.Version:44 - HHH000412: Hibernate ORM core version 5.6.7.Final
+[ INFO ] - org.hibernate.annotations.common.Version:56 - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+[ WARN ] - org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+[ INFO ] - org.hibernate.orm.connections.pooling:115 - HHH10001005: using driver [com.mysql.cj.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/webapp?createDatabaseIfNotExist=true]
+[ INFO ] - org.hibernate.orm.connections.pooling:124 - HHH10001001: Connection properties: {password=****, user=root}
+[ INFO ] - org.hibernate.orm.connections.pooling:129 - HHH10001003: Autocommit mode: false
+[ INFO ] - org.hibernate.orm.connections.pooling:134 - HHH10001007: JDBC isolation level: READ_COMMITTED
+[ INFO ] - org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl:274 - HHH000115: Hibernate connection pool size: 10 (min=1)
+[ INFO ] - org.hibernate.dialect.Dialect:175 - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+[ INFO ] - org.hibernate.orm.connections.access:48 - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@3a7b2e2] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+[ INFO ] - org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]

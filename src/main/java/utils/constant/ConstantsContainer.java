@@ -183,6 +183,7 @@ public class ConstantsContainer {
     public static final String DELETE_FAILED_MSG = "Delete failed. Nothing found";
     public static final String DELETE_SUCCESS_MSG = "Deleted the entity";
     public static final String GAME_MSG = "game";
+    public static final String PER_PAGE_MSG = "perPage";
     public static final String MATCH_PASS_FAIL = "Failed to match the codes during password change.";
     public static final String START_GET_ALL_ENTITY = "Getting all entities from db";
     public static final String GET_ALL_ENTITY_SUCCESS = "Got all entities successfully";

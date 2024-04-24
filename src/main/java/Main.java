@@ -13,8 +13,9 @@ public class Main {
         UserService userService = new UserService();
         GameService gameService = new GameService();
         userService.registerUser("asd","asd@gmail.com","asd","asd");
-        gameService.createGame("25","a","a","a","a","a","a","a");
-        gameService.createGame("25","b","a","a","a","a","a","b");
+        for (int i = 0; i < 10; i++) {
+            gameService.createGame("25","game"+i,"a","a","a","a","a","a");
+        }
     }
 
 }

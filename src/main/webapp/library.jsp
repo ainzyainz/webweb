@@ -18,7 +18,7 @@
 <%--<% int currentPage = (int) request.getAttribute("currentPage");
 %>--%>
 <head>
-    <title>Main Page (Student)</title>
+    <title>Your library</title>
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"/>
     <link rel="stylesheet"
@@ -50,7 +50,7 @@
             </thead>
             <%
                 UserDTO user = (UserDTO) request.getSession().getAttribute("current");
-                Set<GameDTO> set = user.getLibraryDTO().getGameDTOSet();
+                Set<GameDTO> set = (Set<GameDTO>) request.getAttribute("games");
 
 
                 for (GameDTO temp : set) { %>
@@ -60,6 +60,7 @@
             <% }%>
             </tbody>
         </table>
+        <jsp:include page="paginationLibrary.jsp"/>
     </div>
 </div>
 </body>

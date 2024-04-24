@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface GameServiceInterface {
+    Set<GameDTO> getLimited(long id, int x, int y);
     Set<GameDTO> searchGame(String search);
 
     Set<GameDTO> getAllGames();

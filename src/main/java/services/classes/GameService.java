@@ -214,24 +214,33 @@ public class GameService implements GameServiceInterface {
                 .map(gameConverter::applyDTO)
                 .collect(Collectors.toSet());
     }
-    public Set<GameDTO> getLimited(List<GameDTO> list, int x, int y) {
+
+    @Override
+    public Set<GameDTO> getLimited(long id, int x, int y) {
+        User user = userDAO.read(id);
+        if (user == null) {
+            LOGGER.log(Level.INFO, "User is null. Failed to getLimited");
+            return null;
+        }
+        List<Game> games = new ArrayList<>(user.getLibrary().getGames());
         if (x < 0 || y < 0) {
             LOGGER.log(Level.INFO, INPUT_MSG_GETGAMESLIMITED + y);
             return new HashSet<>();
         }
         Set<GameDTO> result = new HashSet<>();
         for (int i = (x - 1) * y; i < y * x; i++) {
-            if (i < list.size()) {
-                result.add(list.get(i));
+            if (i < games.size()) {
+                result.add(gameConverter.applyDTO(games.get(i)));
             } else {
                 break;
             }
         }
         return result;
     }
+
     @Override
     public Set<GameDTO> getGamesLimited(int x, int y) {
-        int start = (x-1)*y;
+        int start = (x - 1) * y;
         int amount = y;
         if (start < 0 || amount < 0) {
             LOGGER.log(Level.INFO, INPUT_MSG_GETGAMESLIMITED + y);
@@ -374,5 +383,12 @@ public class GameService implements GameServiceInterface {
         }
         LOGGER.log(Level.INFO, UPDATE_SUCCESS + name);
         return true;
+    }
+    public Set<GameDTO> getBest(){
+        Set<Game> bestSellers = gameDAO.getBest();
+        if (bestSellers==null){
+            bestSellers = new HashSet<>();
+        }
+    return null;
     }
 }

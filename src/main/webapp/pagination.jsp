@@ -11,7 +11,7 @@
     <title>Title</title>
 </head>
 <body>
-<%int currentPage = (int) request.getAttribute("currentPage");
+<% int currentPage = (int) request.getAttribute("currentPage");
     int noOfPages = (int) request.getAttribute("noOfPages");
     if (currentPage != 1) {
 %>
@@ -30,7 +30,8 @@
 
 <% } else {%>
 
-<a href="mainPage?currentPage=<%=i%>"><%=i%></a>
+<a href="mainPage?currentPage=<%=i%>"><%=i%>
+</a>
 
 <%
         }
@@ -39,14 +40,15 @@
 %>
 
 <a href="mainPage?currentPage=1">1</a>
-<a href="mainPage?currentPage=2">1</a>
+<a href="mainPage?currentPage=2">2</a>
 
-<p><%=currentPage%></p>
+<a><%=currentPage%></a>
 
 
-
-<a href="mainPage?currentPage=<%=noOfPages-1%>"><%=noOfPages-1%></a>
-<a href="mainPage?currentPage=<%=noOfPages%>"><%=noOfPages%></a>
+<a href="mainPage?currentPage=<%=noOfPages-1%>"><%=noOfPages - 1%>
+</a>
+<a href="mainPage?currentPage=<%=noOfPages%>"><%=noOfPages%>
+</a>
 <% }
 
     if (currentPage < noOfPages) {

@@ -73,6 +73,14 @@ public class GameDAOImpl extends DAOImpl<Game> implements GameDAO {
         }
         return list;
     }
+    public Set<Game> getBest(){
+      /*  List<Game> list = new ArrayList<>();
+            list = getEntityManager()
+                    .createQuery(GET_BEST,getEntityClass())
+                    .setMaxResults(3)
+                    .getResultList();*/
+            return null;
+    }
     @Override
     public List<Game> getAllGames() {
         LOGGER.log(Level.INFO, START_GET_ALL_ENTITY);

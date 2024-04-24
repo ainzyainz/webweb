@@ -76,9 +76,24 @@ public class UserServlet extends HttpServlet {
 
     public void getLibrary(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         UserDTO current = (UserDTO) req.getSession().getAttribute("current");
-        Set<GameDTO> libraryGames = userService.getLibraryGames(current);
-        req.setAttribute(GAMES_MSG, libraryGames);
-        req.getRequestDispatcher(LIBRARY_URL + JSP).forward(req, resp);
+        int page = PAGE_DEFAULT;
+        int perPage = PER_PAGE_DEFAULT;
+        String currentPage = req.getParameter(PAGE_MSG);
+        if (currentPage != null) {
+            try {
+                page = Integer.parseInt(currentPage);
+            } catch (NumberFormatException e) {
+                LOGGER.log(Level.INFO, "Failed parsing currentPage");
+            }
+        }
+        Set<GameDTO> gameDTOSet = gameService.getLimited(current.getId(), page, perPage);
+        req.setAttribute(GAMES_MSG, gameDTOSet);
+        req.setAttribute(PAGE_MSG, page);
+        int pages = userService.getNoOfPages(perPage, current);
+        req.setAttribute(NOOFPAGES_MSG, pages);
+        req.setAttribute(PER_PAGE_MSG, perPage);
+        req.getRequestDispatcher(DASH + LIBRARY_URL + JSP).forward(req, resp);
     }
+
 }
 
