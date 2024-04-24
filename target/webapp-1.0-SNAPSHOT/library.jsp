@@ -18,7 +18,7 @@
 <%--<% int currentPage = (int) request.getAttribute("currentPage");
 %>--%>
 <head>
-    <title>Main Page (Student)</title>
+    <title>Your library</title>
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"/>
     <link rel="stylesheet"
@@ -38,9 +38,9 @@
 <body>
 <link rel="stylesheet" type="text/css" href="style1.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<div class="main">
-                <jsp:include page="header.jsp"/>
-
+<jsp:include page="header.jsp"/>
+<a>My Library</a>
+<div class="adminMain">
     <div class="list-div">
         <table>
             <thead>
@@ -50,7 +50,7 @@
             </thead>
             <%
                 UserDTO user = (UserDTO) request.getSession().getAttribute("current");
-                Set<GameDTO> set = user.getLibraryDTO().getGameDTOSet();
+                Set<GameDTO> set = (Set<GameDTO>) request.getAttribute("games");
 
 
                 for (GameDTO temp : set) { %>
@@ -59,9 +59,8 @@
             </td>
             <% }%>
             </tbody>
-
         </table>
+        <jsp:include page="paginationLibrary.jsp"/>
     </div>
-
 </div>
 </body>

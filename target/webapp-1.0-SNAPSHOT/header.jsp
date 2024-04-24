@@ -28,8 +28,9 @@
             </li>
             <li><a href="profile?action=getLibrary" class="link">Library</a></li>
             <li><a href="profile?action=getProfile" class="link"><%=user.getUserDescriptionDTO().getName()%></a></li>
+            <li><a href="profile?action=getProfile" class="link">$<%=user.getBalanceDTO().getBalance()%></a></li>
             <li class="nav-button">
-                <button class="btn white-btn" id="loginBtn" onclick="location.href='signUp.jsp';">Exit Profile</button>
+                <button class="btn white-btn" id="loginBtn" onclick="location.href='profile?action=exit';">Exit Profile</button>
             </li>
         </ul>
     </div>

@@ -16,7 +16,7 @@
     if (currentPage != 1) {
 %>
 <td style="display: inline-block">
-    <a href="mainPage?currentPage=<%=currentPage-1%>">Previous</a>
+    <a href="profile?action=getLibrary&currentPage=<%=currentPage-1%>">Previous</a>
 </td>
 <%} %>
 
@@ -30,7 +30,7 @@
 
 <% } else {%>
 
-<a href="mainPage?currentPage=<%=i%>"><%=i%>
+<a href="profile?action=getLibrary&currentPage=<%=i%>"><%=i%>
 </a>
 
 <%
@@ -39,22 +39,19 @@
 } else {
 %>
 
-<a href="mainPage?currentPage=1">1</a>
-<a href="mainPage?currentPage=2">2</a>
+<a href="profile?action=getLibrary&currentPage=1">1</a>
+<a href="profile?action=getLibrary&currentPage=2">2</a>
 
 <a><%=currentPage%></a>
 
 
-<a href="mainPage?currentPage=<%=noOfPages-1%>"><%=noOfPages - 1%>
+<a href="profile?action=getLibrary&currentPage=<%=noOfPages-1%>"><%=noOfPages - 1%>
 </a>
-<a href="mainPage?currentPage=<%=noOfPages%>"><%=noOfPages%>
+<a href="profile?action=getLibrary&currentPage=<%=noOfPages%>"><%=noOfPages%>
 </a>
 <% }
-
-    if (currentPage < noOfPages) {
-%>
-<a href="mainPage?currentPage=<%=currentPage+1%>">Next</a>
+    if (currentPage < noOfPages) {%>
+<a href="profile?action=getLibrary&currentPage=<%=currentPage+1%>">Next</a>
 <% }%>
-
 </body>
 </html>

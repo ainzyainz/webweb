@@ -24,31 +24,34 @@
 
     <jsp:include page="catalogs.jsp"/>
 
-<% UserDTO user = (UserDTO) request.getSession().getAttribute("current"); %>
+    <% UserDTO user = (UserDTO) request.getSession().getAttribute("current"); %>
     <div class="list-div">
         <table>
             <thead>
             <tr>
                 <th>Games</th>
-                <th class="empty"> </th>
+                <th class="empty"></th>
                 <th><a href="mainPage?action=getBin">Bin</a></th>
             </tr>
             </thead>
             <tbody>
 
             <%
-                Set<GameDTO> games = (Set<GameDTO>) request.getSession().getAttribute("games");
+                Set<GameDTO> games = (Set<GameDTO>) request.getAttribute("games");
                 for (GameDTO temp : games) {
             %>
 
             <tr>
-                <td data-cell="Name"><a href="currentGame?id=<%=temp.getId()%>"><%=temp.getName()%></a>
-                </td>
+                <td data-cell="Name"><a href="currentGame?id=<%=temp.getId()%>"><%=temp.getName()%>
+                </a></td>
+                <td data-cell="Balance"><a
+                        href="currentGame?id=<%=temp.getId()%>">$<%=temp.getGameStatisticsDTO().getPrice()%>
+                </a></td>
 
 
                 <td style="" class="delete-link">
-                    <% if (!user.getBinDTO().getGameDTOSet().contains(temp)&&
-                            !user.getLibraryDTO().getGameDTOSet().contains(temp)){
+                    <% if (!user.getBinDTO().getGameDTOSet().contains(temp) &&
+                            !user.getLibraryDTO().getGameDTOSet().contains(temp)) {
                     %>
                     <div class="nav-button">
                         <a class="btn white-btn" href="mainPage?action=buy&id=<%=temp.getId()%>">Buy Game</a>
@@ -56,14 +59,14 @@
                     <% } %>
                 </td>
                 <td style="" class="delete-link">
-                        <% if (!user.getBinDTO().getGameDTOSet().contains(temp)&&
-                                !user.getLibraryDTO().getGameDTOSet().contains(temp)){
-                            %>
+                    <% if (!user.getBinDTO().getGameDTOSet().contains(temp) &&
+                            !user.getLibraryDTO().getGameDTOSet().contains(temp)) {
+                    %>
                     <div class="nav-button">
 
-                    <a class="btn white-btn" href="mainPage?action=toBin&id=<%=temp.getId()%>">Add to Bin</a>
+                        <a class="btn white-btn" href="mainPage?action=toBin&id=<%=temp.getId()%>">Add to Bin</a>
                     </div>
-                        <% } %>
+                    <% } %>
                 </td>
 
                 <% }%>
@@ -71,7 +74,9 @@
 
             </tbody>
         </table>
+        <%if (request.getAttribute("currentPage")!=null) { %>
         <jsp:include page="pagination.jsp"/>
+        <% }%>
     </div>
 
 </div>
