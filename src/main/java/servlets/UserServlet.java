@@ -1,10 +1,12 @@
 package servlets;
 
 import DTO.GameDTO;
+import DTO.LibraryPageDTO;
 import DTO.UserDTO;
 import services.classes.GameService;
 import services.classes.UserService;
 import utils.hibernate.HibernateUtils;
+import utils.pageLoader.PageLoader;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,6 +26,7 @@ public class UserServlet extends HttpServlet {
     private final UserService userService = new UserService();
     private final Logger LOGGER = Logger.getLogger(UserServlet.class.getName());
     private final GameService gameService = new GameService();
+    private final PageLoader pageLoader = new PageLoader();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -75,22 +78,14 @@ public class UserServlet extends HttpServlet {
 
     public void getLibrary(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         UserDTO current = (UserDTO) req.getSession().getAttribute("current");
-        int page = PAGE_DEFAULT;
-        int perPage = PER_PAGE_DEFAULT;
         String currentPage = req.getParameter(PAGE_MSG);
-        if (currentPage != null) {
-            try {
-                page = Integer.parseInt(currentPage);
-            } catch (NumberFormatException e) {
-                LOGGER.log(Level.INFO, PARSE_MSG_GETLIB);
-            }
-        }
-        Set<GameDTO> gameDTOSet = gameService.getLimited(current.getId(), page, perPage);
-        req.setAttribute(GAMES_MSG, gameDTOSet);
-        req.setAttribute(PAGE_MSG, page);
-        int pages = userService.getNoOfPages(perPage, current);
-        req.setAttribute(NOOFPAGES_MSG, pages);
-        req.setAttribute(PER_PAGE_MSG, perPage);
+
+        LibraryPageDTO libraryPage = pageLoader.buildLibraryPage(currentPage,current);
+
+        req.setAttribute(GAMES_MSG, libraryPage.getGames());
+        req.setAttribute(PAGE_MSG, libraryPage.getPage());
+        req.setAttribute(NOOFPAGES_MSG, libraryPage.getNoOfPages());
+        req.setAttribute(PER_PAGE_MSG, libraryPage.getNoOfPages());
         req.getRequestDispatcher(DASH + LIBRARY_URL + JSP).forward(req, resp);
     }
 

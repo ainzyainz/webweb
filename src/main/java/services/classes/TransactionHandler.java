@@ -23,10 +23,9 @@ import static utils.constant.ConstantsContainer.*;
 
 public class TransactionHandler implements TransactionInterface {
 
-    private final EntityManager entityManager = HibernateUtils.getEntityManager();
-    private final UserDAOImpl userDAO = new UserDAOImpl(entityManager);
+    private final UserDAOImpl userDAO = new UserDAOImpl(HibernateUtils.getEntityManager());
     private final Logger LOGGER = Logger.getLogger(UserService.class.getName());
-    private GameDAO gameDAO = new GameDAOImpl(entityManager);
+    private GameDAO gameDAO = new GameDAOImpl(HibernateUtils.getEntityManager());
     private final GameConverter gameConverter = new GameConverter();
 
     @Override
@@ -45,7 +44,7 @@ public class TransactionHandler implements TransactionInterface {
             userDAO.update(user.getId(), user);
             return null;
         };
-        UtilsInterface.superMethodInterface(betweenBeginAndCommited,entityManager);
+        UtilsInterface.superMethodInterface(betweenBeginAndCommited,HibernateUtils.getEntityManager());
     }
 
     @Override
@@ -63,13 +62,13 @@ public class TransactionHandler implements TransactionInterface {
         MyInterfaceToDAO<UserDTO> betweenBeginAndCommited = () -> {
             double userBalance = userDTO.getBalanceDTO().getBalance();
             double total = 0;
-            if (!userDAO.checkBalance(userBalance, total)) {
-                LOGGER.log(Level.INFO, NOT_ENOUGH_BUYALLFROMBIN + userDTO.getEmail());
-                return null;
-            }
             for (GameDTO temp : binDTO.getGameDTOSet()) {
                 total += temp.getGameStatisticsDTO().getPrice();
                 userDTO.getLibraryDTO().getGameDTOSet().add(temp);
+            }
+            if (!userDAO.checkBalance(userBalance, total)) {
+                LOGGER.log(Level.INFO, NOT_ENOUGH_BUYALLFROMBIN + userDTO.getEmail());
+                return null;
             }
             User user = userDAO.read(userDTO.getId());
             fromBalance(user, total);
@@ -90,7 +89,7 @@ public class TransactionHandler implements TransactionInterface {
             userDTO.getBalanceDTO().setBalance(userBalance-total);
             return userDTO;
         };
-        return UtilsInterface.superMethodInterface(betweenBeginAndCommited, entityManager) != null;
+        return UtilsInterface.superMethodInterface(betweenBeginAndCommited, HibernateUtils.getEntityManager()) != null;
     }
 
     @Override
@@ -134,7 +133,7 @@ public class TransactionHandler implements TransactionInterface {
             }
             return null;
         };
-        UserDTO user = UtilsInterface.superMethodInterface(betweenBeginAndCommited,entityManager);
+        UserDTO user = UtilsInterface.superMethodInterface(betweenBeginAndCommited,HibernateUtils.getEntityManager());
         return user != null;
     }
 }

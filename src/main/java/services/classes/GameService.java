@@ -6,10 +6,7 @@ import DAO.classes.GameRequirementsDAOImpl;
 import DAO.classes.UserDAOImpl;
 import DAO.interfaces.GameRequirementsDAO;
 import DAO.interfaces.UserDAO;
-import DTO.CatalogDTO;
-import DTO.GameDTO;
-import DTO.ReviewDTO;
-import DTO.UserDTO;
+import DTO.*;
 import entities.*;
 import services.interfaces.GameServiceInterface;
 import utils.converter.CatalogConverter;
@@ -33,14 +30,14 @@ import static utils.constant.ConstantsContainer.*;
 
 public class GameService implements GameServiceInterface {
     private final Logger LOGGER = Logger.getLogger(GameService.class.getName());
-    private final EntityManager entityManager = HibernateUtils.getEntityManager();
-    private final GameDAOImpl gameDAO = new GameDAOImpl(entityManager);
-    private final GameRequirementsDAO gameRequirementsDAO = new GameRequirementsDAOImpl(entityManager);
+    private final GameDAOImpl gameDAO = new GameDAOImpl(HibernateUtils.getEntityManager());
+    private final GameRequirementsDAO gameRequirementsDAO = new GameRequirementsDAOImpl(HibernateUtils.getEntityManager());
     private final GameConverter gameConverter = new GameConverter();
     private final CatalogConverter catalogConverter = new CatalogConverter();
-    private final CatalogDAOImpl catalogDAO = new CatalogDAOImpl(entityManager);
+    private final CatalogDAOImpl catalogDAO = new CatalogDAOImpl(HibernateUtils.getEntityManager());
     private final ReviewConverter reviewConverter = new ReviewConverter();
-    private final UserDAO userDAO = new UserDAOImpl(entityManager);
+    private final UserDAO userDAO = new UserDAOImpl(HibernateUtils.getEntityManager());
+
 
     @Override
     public Set<GameDTO> searchGame(String search) {
@@ -55,7 +52,7 @@ public class GameService implements GameServiceInterface {
 
             return gameSet;
         };
-        List<Game> games = UtilsInterface.superMethodInterface(betwenBeginAndCommited, entityManager);
+        List<Game> games = UtilsInterface.superMethodInterface(betwenBeginAndCommited, HibernateUtils.getEntityManager());
         return games.stream().map(gameConverter::applyDTO).collect(Collectors.toSet());
     }
 
@@ -73,7 +70,7 @@ public class GameService implements GameServiceInterface {
             }
             return game;
         };
-        Game result = UtilsInterface.superMethodInterface(betwenBeginAndCommited, entityManager);
+        Game result = UtilsInterface.superMethodInterface(betwenBeginAndCommited, HibernateUtils.getEntityManager());
         return result == null ? null : gameConverter.applyDTO(result);
     }
 
@@ -83,7 +80,7 @@ public class GameService implements GameServiceInterface {
             List<Game> games = gameDAO.getAllGames();
             return games;
         };
-        List<Game> resultList = UtilsInterface.superMethodInterface(betweenBeginAndCommitted, entityManager);
+        List<Game> resultList = UtilsInterface.superMethodInterface(betweenBeginAndCommitted, HibernateUtils.getEntityManager());
         if (resultList == null) {
             LOGGER.log(Level.INFO, GETALLGAMES_RESULT_LIST_NULL);
             return new HashSet<>();
@@ -142,7 +139,7 @@ public class GameService implements GameServiceInterface {
         game.setStats(gameStatistics);
         game.setReqs(gameRequirements);
         MyInterfaceToDAO<Game> betweenBeginAndCommitted = () -> gameDAO.create(game);
-        UtilsInterface.superMethodInterface(betweenBeginAndCommitted, entityManager);
+        UtilsInterface.superMethodInterface(betweenBeginAndCommitted, HibernateUtils.getEntityManager());
         return gameConverter.applyDTO(game);
     }
 
@@ -156,7 +153,7 @@ public class GameService implements GameServiceInterface {
             Game game = gameDAO.read(gameDTO.getId());
             return game.getReviews();
         };
-        Set<Review> reviews = UtilsInterface.superMethodInterface(betweenBeginAndCommited, entityManager);
+        Set<Review> reviews = UtilsInterface.superMethodInterface(betweenBeginAndCommited, HibernateUtils.getEntityManager());
         Set<ReviewDTO> reviewDTOSet = new HashSet<>();
         reviews.stream().map(reviewConverter::applyDTO).forEach(reviewDTOSet::add);
         return reviewDTOSet;
@@ -178,14 +175,14 @@ public class GameService implements GameServiceInterface {
             }
             return gameDAO.read(id);
         };
-        Game game = UtilsInterface.superMethodInterface(betweenBeginAndCommited, entityManager);
+        Game game = UtilsInterface.superMethodInterface(betweenBeginAndCommited, HibernateUtils.getEntityManager());
         return game != null ? gameConverter.applyDTO(game) : null;
     }
 
     @Override
     public Set<CatalogDTO> getAllCatalogs() {
         MyInterfaceToDAO<List<Catalog>> betweenBeginAndCommitted = catalogDAO::getAllCatalogs;
-        List<Catalog> catalogs = UtilsInterface.superMethodInterface(betweenBeginAndCommitted, entityManager);
+        List<Catalog> catalogs = UtilsInterface.superMethodInterface(betweenBeginAndCommitted, HibernateUtils.getEntityManager());
         Set<CatalogDTO> catalogDTOSet = new HashSet<>();
         catalogs.stream().map(catalogConverter::applyDTO).forEach(catalogDTOSet::add);
         return catalogDTOSet;
@@ -207,7 +204,7 @@ public class GameService implements GameServiceInterface {
             }
             return catalogDAO.read(intId);
         };
-        Catalog catalog = UtilsInterface.superMethodInterface(betweenBeginAndCommit, entityManager);
+        Catalog catalog = UtilsInterface.superMethodInterface(betweenBeginAndCommit, HibernateUtils.getEntityManager());
 
         return catalog.getGames()
                 .stream()
@@ -247,7 +244,7 @@ public class GameService implements GameServiceInterface {
             return new HashSet<>();
         }
         MyInterfaceToDAO<Set<Game>> betweenBeginAndCommit = () -> gameDAO.getLimited(start, amount);
-        Set<Game> resultSet = UtilsInterface.superMethodInterface(betweenBeginAndCommit, entityManager);
+        Set<Game> resultSet = UtilsInterface.superMethodInterface(betweenBeginAndCommit, HibernateUtils.getEntityManager());
         Set<GameDTO> gameDTOSet = new HashSet<>();
         resultSet.stream().map(gameConverter::applyDTO).forEach(gameDTOSet::add);
         return gameDTOSet;
@@ -292,7 +289,7 @@ public class GameService implements GameServiceInterface {
             LOGGER.log(Level.INFO, game.getName() + ADDTOCATALOG_SUCCESS + catalog.getName());
             return gameDAO.update(game.getId(), game);
         };
-        Game result = UtilsInterface.superMethodInterface(betweenBeginAndCommitted, entityManager);
+        Game result = UtilsInterface.superMethodInterface(betweenBeginAndCommitted, HibernateUtils.getEntityManager());
         return result != null;
     }
 
@@ -321,7 +318,7 @@ public class GameService implements GameServiceInterface {
             LOGGER.log(Level.INFO, DELETE_SUCCESS + id);
             return catalog;
         };
-        Catalog result = UtilsInterface.superMethodInterface(betweenBeginAndCommit, entityManager);
+        Catalog result = UtilsInterface.superMethodInterface(betweenBeginAndCommit, HibernateUtils.getEntityManager());
         return result != null;
     }
 

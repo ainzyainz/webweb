@@ -21,8 +21,7 @@ import java.util.logging.Logger;
 import static utils.constant.ConstantsContainer.*;
 
 public class ChangePassHandler implements ChangePassInterface {
-    private EntityManager entityManager = HibernateUtils.getEntityManager();
-    private UserDAOImpl userDAO = new UserDAOImpl(entityManager);
+    private UserDAOImpl userDAO = new UserDAOImpl(HibernateUtils.getEntityManager());
     private Logger LOGGER = Logger.getLogger(ChangePassHandler.class.getName());
     private final UserConverter userConverter = new UserConverter();
 
@@ -69,7 +68,7 @@ public class ChangePassHandler implements ChangePassInterface {
     @Override
     public UserDTO isValid(String email) {
         MyInterfaceToDAO<User> betweenBeginAndCommited = () -> userDAO.getUserByEmail(email);
-        User changeUser = UtilsInterface.superMethodInterface(betweenBeginAndCommited,entityManager);
+        User changeUser = UtilsInterface.superMethodInterface(betweenBeginAndCommited,HibernateUtils.getEntityManager());
         if (changeUser != null) {
             return userConverter.applyDTO(changeUser);
         }
@@ -87,6 +86,6 @@ public class ChangePassHandler implements ChangePassInterface {
             userDAO.update(id, user);
             return null;
         };
-        UtilsInterface.superMethodInterface(betweenBeginAndCommited,entityManager);
+        UtilsInterface.superMethodInterface(betweenBeginAndCommited,HibernateUtils.getEntityManager());
     }
 }

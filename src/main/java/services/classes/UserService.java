@@ -24,20 +24,19 @@ import java.util.logging.Logger;
 import static utils.constant.ConstantsContainer.*;
 
 public class UserService implements UserServiceInterface {
-    private EntityManager entityManager = HibernateUtils.getEntityManager();
-    private final UserDAOImpl userDAO = new UserDAOImpl(entityManager);
-    private final UserDescriptionDAOImpl userDescriptionDAO = new UserDescriptionDAOImpl(entityManager);
+    private final UserDAOImpl userDAO = new UserDAOImpl(HibernateUtils.getEntityManager());
+    private final UserDescriptionDAOImpl userDescriptionDAO = new UserDescriptionDAOImpl(HibernateUtils.getEntityManager());
     private final Logger LOGGER = Logger.getLogger(UserService.class.getName());
     private final GameConverter gameConverter = new GameConverter();
     private final UserConverter userConverter = new UserConverter();
     private final ReviewConverter reviewConverter = new ReviewConverter();
-    private final ReviewDAO reviewDAO = new ReviewDAOImpl(entityManager);
-    private final GameDAO gameDAO = new GameDAOImpl(entityManager);
+    private final ReviewDAO reviewDAO = new ReviewDAOImpl(HibernateUtils.getEntityManager());
+    private final GameDAO gameDAO = new GameDAOImpl(HibernateUtils.getEntityManager());
 
     @Override
     public int getNoOfPages(int perPage, UserDTO userDTO) {
         MyInterfaceToDAO<User> betweenBeginAndCommit = () -> userDAO.read(userDTO.getId());
-        User user = UtilsInterface.superMethodInterface(betweenBeginAndCommit, entityManager);
+        User user = UtilsInterface.superMethodInterface(betweenBeginAndCommit, HibernateUtils.getEntityManager());
         int total = user.getLibrary().getGames().size();
         return (int) Math.ceil(total * 1.0 / perPage);
     }
@@ -73,13 +72,12 @@ public class UserService implements UserServiceInterface {
             LOGGER.log(Level.INFO, WRITEREVIEW_SUCCESS + userDTO.getEmail());
             return reviewConverter.applyDTO(review);
         };
-        ReviewDTO result = UtilsInterface.superMethodInterface(betweenBeginAndCommit, entityManager);
+        ReviewDTO result = UtilsInterface.superMethodInterface(betweenBeginAndCommit, HibernateUtils.getEntityManager());
         return result != null;
     }
 
     @Override
     public UserDTO loginUser(String email, String password) {
-        System.out.println("loginuser" + entityManager.isOpen());
         if (email.isBlank() || password.isBlank()) {
             LOGGER.log(Level.INFO, INPUT_MSG_LOGINUSER);
             return null;
@@ -90,7 +88,7 @@ public class UserService implements UserServiceInterface {
                     users.stream()
                             .findFirst().orElse(null);
         };
-        User user = UtilsInterface.superMethodInterface(betweenBeginAndCommited, entityManager);
+        User user = UtilsInterface.superMethodInterface(betweenBeginAndCommited, HibernateUtils.getEntityManager());
         return user != null ? userConverter.applyDTO(user) : null;
     }
 
@@ -105,7 +103,7 @@ public class UserService implements UserServiceInterface {
             users.stream().map(userConverter::applyDTO).forEach(userDTOSet::add);
             return userDTOSet;
         };
-        return UtilsInterface.superMethodInterface(betweenBeginAndCommited, entityManager);
+        return UtilsInterface.superMethodInterface(betweenBeginAndCommited, HibernateUtils.getEntityManager());
     }
 
     @Override
@@ -142,7 +140,7 @@ public class UserService implements UserServiceInterface {
             gameDAO.update(game.getId(), game);
             return true;
         };
-        return UtilsInterface.superMethodInterface(betweenBeginAndCommited, entityManager);
+        return UtilsInterface.superMethodInterface(betweenBeginAndCommited, HibernateUtils.getEntityManager());
     }
 
     @Override
@@ -180,7 +178,7 @@ public class UserService implements UserServiceInterface {
             gameDAO.update(game.getId(), game);
             return true;
         };
-        return UtilsInterface.superMethodInterface(betweenBeginAndCommited, entityManager);
+        return UtilsInterface.superMethodInterface(betweenBeginAndCommited, HibernateUtils.getEntityManager());
     }
 
 
@@ -193,7 +191,7 @@ public class UserService implements UserServiceInterface {
             User user = userDAO.read(userDTO.getId());
             return user.getLibrary().getGames();
         };
-        Set<Game> games = UtilsInterface.superMethodInterface(betweenBeginAndCommited, entityManager);
+        Set<Game> games = UtilsInterface.superMethodInterface(betweenBeginAndCommited, HibernateUtils.getEntityManager());
         Set<GameDTO> gameDTOSet = new HashSet<>();
         games.stream().map(gameConverter::applyDTO).forEach(gameDTOSet::add);
         return gameDTOSet;
@@ -253,7 +251,7 @@ public class UserService implements UserServiceInterface {
             LOGGER.log(Level.INFO, SUCCESS_REGISTERUSER + email);
             return user;
         };
-        User result = UtilsInterface.superMethodInterface(betweenBeginAndCommited, entityManager);
+        User result = UtilsInterface.superMethodInterface(betweenBeginAndCommited, HibernateUtils.getEntityManager());
         return result != null ? userConverter.applyDTO(result) : null;
     }
 
@@ -273,7 +271,7 @@ public class UserService implements UserServiceInterface {
             }
             return userDTOSet;
         };
-        return UtilsInterface.superMethodInterface(betweenBeginAndCommited, entityManager);
+        return UtilsInterface.superMethodInterface(betweenBeginAndCommited, HibernateUtils.getEntityManager());
     }
 
     @Override
@@ -303,7 +301,7 @@ public class UserService implements UserServiceInterface {
                 return user;
             }
         };
-        User result = UtilsInterface.superMethodInterface(betweenBeginAndCommited, entityManager);
+        User result = UtilsInterface.superMethodInterface(betweenBeginAndCommited, HibernateUtils.getEntityManager());
         return result != null;
     }
 
@@ -341,7 +339,7 @@ public class UserService implements UserServiceInterface {
             return user;
         };
 
-        User result = UtilsInterface.superMethodInterface(betweenBeginAndCommited, entityManager);
+        User result = UtilsInterface.superMethodInterface(betweenBeginAndCommited, HibernateUtils.getEntityManager());
         return result != null ? userConverter.applyDTO(result) : null;
     }
 }

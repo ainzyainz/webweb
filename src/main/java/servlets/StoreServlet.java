@@ -2,10 +2,12 @@ package servlets;
 
 import DTO.CatalogDTO;
 import DTO.GameDTO;
+import DTO.StorePageDTO;
 import DTO.UserDTO;
 import services.classes.GameService;
 import services.classes.TransactionHandler;
 import services.classes.UserService;
+import utils.pageLoader.PageLoader;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,7 +28,7 @@ public class StoreServlet extends HttpServlet {
     private TransactionHandler transactionHandler = new TransactionHandler();
     private Logger LOGGER = Logger.getLogger(StoreServlet.class.getName());
     private final UserService userService = new UserService();
-
+    private final PageLoader pageLoader = new PageLoader();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter(ACTION_);
@@ -71,9 +73,7 @@ public class StoreServlet extends HttpServlet {
         UserDTO userDTO = (UserDTO) req.getSession().getAttribute("current");
         if (!transactionHandler.buyAllFromBin(userDTO)) {
             LOGGER.log(Level.INFO, BUYALL_FAILED);
-            req.setAttribute(FAILED_MSG, true);
-            req.setAttribute(GAMES_MSG, userDTO.getBinDTO().getGameDTOSet());
-            req.getRequestDispatcher(DASH + BIN_URL + JSP).forward(req, resp);
+            resp.sendRedirect("notEnoughMoney.jsp");
             return;
         }
         LOGGER.log(Level.INFO, BUYALL_SUCCESS);
@@ -117,7 +117,7 @@ public class StoreServlet extends HttpServlet {
         UserDTO userDTO = (UserDTO) req.getSession().getAttribute(CURRENT_MSG);
         if (!transactionHandler.buyGame(id, userDTO)) {
             LOGGER.log(Level.INFO, BUYGAME_FAILED + id);
-            resp.sendRedirect(MAINPAGE_URL);
+            resp.sendRedirect("notEnoughMoney.jsp");
             return;
         }
         LOGGER.log(Level.INFO, BUYGAME_SUCCESS + id);
@@ -126,29 +126,15 @@ public class StoreServlet extends HttpServlet {
     }
 
     public void getList(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        int page = PAGE_DEFAULT;
-        int perPage = PER_PAGE_DEFAULT;
+
         String currentPage = req.getParameter(PAGE_MSG);
-        int intPage;
-        if (currentPage != null) {
-            try {
-                intPage = Integer.parseInt(currentPage);
-                page = intPage;
-            } catch (NumberFormatException e) {
-                LOGGER.log(Level.INFO, "Failed parsing during getList. Page must be a number");
-            }
-        }
+        StorePageDTO mainPage = pageLoader.buildStorePage(currentPage);
 
-        int pages = gameService.getNoOfPages(perPage);
-        Set<CatalogDTO> catalogDTOSet = gameService.getAllCatalogs();
-        Set<GameDTO> allGames = gameService.getGamesLimited(page, perPage);
-        Set<GameDTO> best = gameService.getBest();
-
-        req.setAttribute(CATALOGS_MSG, catalogDTOSet);
-        req.setAttribute(GAMES_MSG, allGames);
-        req.setAttribute(NOOFPAGES_MSG, pages);
-        req.setAttribute("best", best);
-        req.setAttribute(CURRENTPAGE_MSG, page);
+        req.setAttribute(CATALOGS_MSG, mainPage.getCatalogDTOSet());
+        req.setAttribute(GAMES_MSG, mainPage.getAllGames());
+        req.setAttribute(NOOFPAGES_MSG, mainPage.getNoOfPages());
+        req.setAttribute("best", mainPage.getBest());
+        req.setAttribute(CURRENTPAGE_MSG, mainPage.getPage());
         req.getRequestDispatcher(DASH + MAINPAGE_URL + JSP).forward(req, resp);
     }
 }
