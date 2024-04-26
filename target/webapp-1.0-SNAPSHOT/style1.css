@@ -10,7 +10,10 @@
 .balance{
   color: white;
 }
-
+.best{
+  width: 50%;
+  margin: auto;
+}
 body{
   background: rgb(14, 14, 14);
   background-size: cover;

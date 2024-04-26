@@ -183,7 +183,7 @@ public class UserService implements UserServiceInterface {
         return UtilsInterface.superMethodInterface(betweenBeginAndCommited, entityManager);
     }
 
-    @Override
+
     public Set<GameDTO> getLibraryGames(UserDTO userDTO) {
         if (userDTO == null) {
             LOGGER.log(Level.INFO, "Incorrect input in getLibraryGames. User is null");

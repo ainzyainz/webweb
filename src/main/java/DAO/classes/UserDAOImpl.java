@@ -81,7 +81,7 @@ public class UserDAOImpl extends DAOImpl<User> implements UserDAO {
     }
     @Override
     public boolean checkBalance(double userBalance, double price){
-        return userBalance>price;
+        return userBalance>=price;
     }
     public List<User> getUserByEmailAndPassword(String email, String password) {
         String query = String.format("%s%s%s%s%s", GET_USER_BY_EMAIL_QUERY, email, AND_PASSWORD, password, END_QUERY2);
