@@ -37,11 +37,15 @@ public class TransactionHandler implements TransactionInterface {
 
     @Override
     public void toBalance(UserDTO userDTO, double num) {
-        User user = userDAO.read(userDTO.getId());
-        double current = userDTO.getBalanceDTO().getBalance();
-        user.getBalance().setBalance(current + num);
-        userDTO.getBalanceDTO().setBalance(current + num);
-        userDAO.update(user.getId(), user);
+        MyInterfaceToDAO<Object> betweenBeginAndCommited = () -> {
+            User user = userDAO.read(userDTO.getId());
+            double current = userDTO.getBalanceDTO().getBalance();
+            user.getBalance().setBalance(current + num);
+            userDTO.getBalanceDTO().setBalance(current + num);
+            userDAO.update(user.getId(), user);
+            return null;
+        };
+        UtilsInterface.superMethodInterface(betweenBeginAndCommited,entityManager);
     }
 
     @Override

@@ -384,11 +384,14 @@ public class GameService implements GameServiceInterface {
         LOGGER.log(Level.INFO, UPDATE_SUCCESS + name);
         return true;
     }
+    @Override
     public Set<GameDTO> getBest(){
         Set<Game> bestSellers = gameDAO.getBest();
         if (bestSellers==null){
             bestSellers = new HashSet<>();
         }
-    return null;
+    return bestSellers.stream()
+            .map(gameConverter::applyDTO)
+            .collect(Collectors.toSet());
     }
 }

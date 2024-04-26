@@ -55,7 +55,9 @@ public class UserDAOImpl extends DAOImpl<User> implements UserDAO {
 
     public User getUserByPassword(String password) {
         String query = String.format("%s%s%s", GET_USER_BY_PASSWORD_QUERY, password, END_QUERY);
-        List<User> users = getEntityManager().createNativeQuery(query, User.class).getResultList();
+        List<User> users = getEntityManager()
+                .createNativeQuery(query, User.class)
+                .getResultList();
         if (users.isEmpty()) {
             return null;
         } else {

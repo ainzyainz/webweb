@@ -20,6 +20,8 @@ public interface GameServiceInterface {
 
     Set<CatalogDTO> getAllCatalogs();
 
+    Set<GameDTO> getBest();
+
     Set<GameDTO> getGamesByCatalog(String id);
 
     Set<GameDTO> getGamesLimited(int x, int y);

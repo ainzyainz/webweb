@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 import static utils.constant.ConstantsContainer.*;
 
@@ -24,6 +25,7 @@ public class GameDAOImpl extends DAOImpl<Game> implements GameDAO {
     public Class<Game> getEntityClass() {
         return Game.class;
     }
+
     @Override
     public EntityManager getEntityManager() {
         return super.getEntityManager();
@@ -36,14 +38,15 @@ public class GameDAOImpl extends DAOImpl<Game> implements GameDAO {
         query.setMaxResults(y);
         List<Game> list = query.getResultList();
         Set<Game> games = new HashSet<>();
-        if (query.getResultList().isEmpty()){
-            LOGGER.log(Level.INFO,NO_GAMES_FOUND);
+        if (query.getResultList().isEmpty()) {
+            LOGGER.log(Level.INFO, NO_GAMES_FOUND);
             return games;
         }
         list.forEach(games::add);
-        LOGGER.log(Level.INFO,GET_LIMITED_SUCCESS + x);
+        LOGGER.log(Level.INFO, GET_LIMITED_SUCCESS + x);
         return games;
     }
+
     @Override
     public Game getGameByName(String name) {
         String query = String.format("%s%s%s", GET_GAME_BY_NAME_QUERY, name, END_QUERY);
@@ -60,6 +63,7 @@ public class GameDAOImpl extends DAOImpl<Game> implements GameDAO {
                     .orElse(null);
         }
     }
+
     @Override
     public List<Game> findBySearch(String search) {
         List<Game> list = new ArrayList<>();
@@ -73,14 +77,15 @@ public class GameDAOImpl extends DAOImpl<Game> implements GameDAO {
         }
         return list;
     }
-    public Set<Game> getBest(){
-      /*  List<Game> list = new ArrayList<>();
-            list = getEntityManager()
-                    .createQuery(GET_BEST,getEntityClass())
-                    .setMaxResults(3)
-                    .getResultList();*/
-            return null;
+
+    public Set<Game> getBest() {
+        List<Game> list;
+        list = getEntityManager()
+                .createNativeQuery(GET_BEST, getEntityClass())
+                .getResultList();
+        return new HashSet<>(list);
     }
+
     @Override
     public List<Game> getAllGames() {
         LOGGER.log(Level.INFO, START_GET_ALL_ENTITY);

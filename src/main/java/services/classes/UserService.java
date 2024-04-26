@@ -34,11 +34,14 @@ public class UserService implements UserServiceInterface {
     private final ReviewDAO reviewDAO = new ReviewDAOImpl(entityManager);
     private final GameDAO gameDAO = new GameDAOImpl(entityManager);
 
-    public int getNoOfPages(int perPage, UserDTO userDTO){
-        User user = userDAO.read(userDTO.getId());
+    @Override
+    public int getNoOfPages(int perPage, UserDTO userDTO) {
+        MyInterfaceToDAO<User> betweenBeginAndCommit = () -> userDAO.read(userDTO.getId());
+        User user = UtilsInterface.superMethodInterface(betweenBeginAndCommit, entityManager);
         int total = user.getLibrary().getGames().size();
         return (int) Math.ceil(total * 1.0 / perPage);
     }
+
     @Override
     public boolean writeReview(String text, UserDTO userDTO,
                                GameDTO gameDTO) {
@@ -104,6 +107,7 @@ public class UserService implements UserServiceInterface {
         };
         return UtilsInterface.superMethodInterface(betweenBeginAndCommited, entityManager);
     }
+
     @Override
     public boolean removeFromBin(String game_id, UserDTO userDTO) {
         if (game_id.isBlank() || userDTO == null) {
@@ -178,17 +182,18 @@ public class UserService implements UserServiceInterface {
         };
         return UtilsInterface.superMethodInterface(betweenBeginAndCommited, entityManager);
     }
+
     @Override
-    public Set<GameDTO> getLibraryGames(UserDTO userDTO){
-         if (userDTO==null){
-            LOGGER.log(Level.INFO,"Incorrect input in getLibraryGames. User is null");
+    public Set<GameDTO> getLibraryGames(UserDTO userDTO) {
+        if (userDTO == null) {
+            LOGGER.log(Level.INFO, "Incorrect input in getLibraryGames. User is null");
             return null;
         }
         MyInterfaceToDAO<Set<Game>> betweenBeginAndCommited = () -> {
             User user = userDAO.read(userDTO.getId());
             return user.getLibrary().getGames();
         };
-        Set<Game> games = UtilsInterface.superMethodInterface(betweenBeginAndCommited,entityManager);
+        Set<Game> games = UtilsInterface.superMethodInterface(betweenBeginAndCommited, entityManager);
         Set<GameDTO> gameDTOSet = new HashSet<>();
         games.stream().map(gameConverter::applyDTO).forEach(gameDTOSet::add);
         return gameDTOSet;

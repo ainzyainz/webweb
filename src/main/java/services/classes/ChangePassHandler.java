@@ -5,6 +5,8 @@ import DTO.UserDTO;
 import entities.User;
 import services.interfaces.ChangePassInterface;
 import utils.converter.UserConverter;
+import utils.functionalinterface.MyInterfaceToDAO;
+import utils.functionalinterface.UtilsInterface;
 import utils.hibernate.HibernateUtils;
 
 import javax.mail.*;
@@ -66,7 +68,8 @@ public class ChangePassHandler implements ChangePassInterface {
     }
     @Override
     public UserDTO isValid(String email) {
-        User changeUser = userDAO.getUserByEmail(email);
+        MyInterfaceToDAO<User> betweenBeginAndCommited = () -> userDAO.getUserByEmail(email);
+        User changeUser = UtilsInterface.superMethodInterface(betweenBeginAndCommited,entityManager);
         if (changeUser != null) {
             return userConverter.applyDTO(changeUser);
         }
@@ -78,8 +81,12 @@ public class ChangePassHandler implements ChangePassInterface {
     }
     @Override
     public void updatePassword(long id, String newPassword) {
-        User user = userDAO.read(id);
-        user.setPassword(newPassword);
-        userDAO.update(id, user);
+        MyInterfaceToDAO<Object> betweenBeginAndCommited = () -> {
+            User user = userDAO.read(id);
+            user.setPassword(newPassword);
+            userDAO.update(id, user);
+            return null;
+        };
+        UtilsInterface.superMethodInterface(betweenBeginAndCommited,entityManager);
     }
 }

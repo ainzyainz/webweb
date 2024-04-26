@@ -26,6 +26,5 @@ public interface UserServiceInterface {
     UserDTO updateUser(String user_id, String name,
                        String surname, String address,
                        String user_age);
-
-    Set<GameDTO> getLibraryGames(UserDTO userDTO);
+    int getNoOfPages(int perPage, UserDTO userDTO);
 }

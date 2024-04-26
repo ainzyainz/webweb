@@ -99,7 +99,7 @@ public class StoreServlet extends HttpServlet {
         req.getRequestDispatcher(DASH + BIN_URL + JSP).forward(req, resp);
     }
 
-        public void addToBin(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public void addToBin(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String id = req.getParameter(ID_MSG);
         UserDTO userDTO = (UserDTO) req.getSession().getAttribute(CURRENT_MSG);
         if (!userService.addToBin(id, userDTO)) {
@@ -147,6 +147,7 @@ public class StoreServlet extends HttpServlet {
         req.setAttribute(CATALOGS_MSG, catalogDTOSet);
         req.setAttribute(GAMES_MSG, allGames);
         req.setAttribute(NOOFPAGES_MSG, pages);
+        req.setAttribute("best", best);
         req.setAttribute(CURRENTPAGE_MSG, page);
         req.getRequestDispatcher(DASH + MAINPAGE_URL + JSP).forward(req, resp);
     }

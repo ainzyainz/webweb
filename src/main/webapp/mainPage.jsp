@@ -35,15 +35,23 @@
             </tr>
             </thead>
             <tbody>
+            <div class = "best">
+                <p>Bestsellers</p>
+                <%
+                    Set<GameDTO> games = (Set<GameDTO>) request.getAttribute("games");
+                    Set<GameDTO> best = (Set<GameDTO>) request.getAttribute("best");
+                    for (GameDTO bestGame : best) { %>
+                <a href="currentGame?id=<%=bestGame.getId()%>"><%=bestGame.getName()%> </a>
+                <% }%>
+            </div>
 
-            <%
-                Set<GameDTO> games = (Set<GameDTO>) request.getAttribute("games");
-                for (GameDTO temp : games) {
+            <p>Games</p>
+
+            <% for (GameDTO temp : games) {
             %>
 
             <tr>
-                <td data-cell="Name"><a href="currentGame?id=<%=temp.getId()%>"><%=temp.getName()%>
-                </a></td>
+                <td data-cell="Name"><a href="currentGame?id=<%=temp.getId()%>"><%=temp.getName()%></a></td>
                 <td data-cell="Balance"><a
                         href="currentGame?id=<%=temp.getId()%>">$<%=temp.getGameStatisticsDTO().getPrice()%>
                 </a></td>
@@ -74,7 +82,7 @@
 
             </tbody>
         </table>
-        <%if (request.getAttribute("currentPage")!=null) { %>
+        <%if (request.getAttribute("currentPage") != null) { %>
         <jsp:include page="pagination.jsp"/>
         <% }%>
     </div>

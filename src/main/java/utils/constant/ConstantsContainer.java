@@ -11,6 +11,8 @@ public class ConstantsContainer {
     public static final String CURRENTGAME_URL = "currentGame";
     public static final String NOSUCHGAME_URL = "noSuchGame";
     public static final String UNKNOWNACTION_URL = "unknownAction";
+    public static final String SIGNIN_URL = "signIn";
+
     public static final String BIN_URL = "bin";
     public static final String MAINPAGEADMIN_URL = "mainPageAdmin";
     public static final String ADMINGAME_URL = "adminGame";
@@ -42,6 +44,7 @@ public class ConstantsContainer {
     public static final String INPUT_MSG_CREATEGAME = "Incorrect input in creategame";
     public static final String PARSE_MSG_CREATEGAME = "Failed creating game. Price is not a number. Typed value = ";
     public static final String PARSE_MSG_GETLIST = "Failed parsing during getList. Page must be a number.";
+    public static final String PARSE_MSG_GETLIB = "Failed parsing currentPage in library. Page must be a number";
     public static final String INCORRECT_PRICE = "Price value cannot be less than 0. Set value = ";
     public static final String INPUT_MSG_GETGAMESBYCATALOG = "Incorrect input in getGamesByCatalog";
     public static final String PARSE_MSG_GETGAMESBYCATALOG = "Failed parsing id in getGamesByCatalog. Typed value = ";
@@ -208,9 +211,11 @@ public class ConstantsContainer {
     public static final String GET_USER_BY_PASSWORD_QUERY = "select * from user where password = '";
     public static final String END_QUERY = "'";
     public static final String END_QUERY2 = "';";
+    public static final String GET_BEST ="select game.* from game join game_stats order by purchase_counter desc limit 3";
     public static final String PASSWORD_IS_NULL = "New password is null";
     public static final String AND_PASSWORD = "' and password ='";
     public static final String PASSWORD_CHANGE_SUCCESS = "User changed password to ";
+    public static final String INVALID_ACTION_USER = "Invalid action in userServlet. Input - ";
 
     public static final String WRITEREVIEW_INPUT_MSG = "Incorrect input in writeReview ";
     public static final String WRITEREVIEW_NULL_MSG = "Failed writing review. User or game is non-existent";

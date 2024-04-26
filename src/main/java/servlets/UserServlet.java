@@ -46,22 +46,21 @@ public class UserServlet extends HttpServlet {
                 exitProfile(req, resp);
                 break;
             default:
-                LOGGER.log(Level.INFO, "Invalid action input in userServlet");
-                resp.sendRedirect("unknownAction.jsp");
+                LOGGER.log(Level.INFO, INVALID_ACTION_USER+action);
+                resp.sendRedirect(UNKNOWNACTION_URL+JSP);
         }
     }
 
     public void getProfile(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        req.getRequestDispatcher("/profile.jsp").forward(req, resp);
+        req.getRequestDispatcher(DASH + PROFILE_URL + JSP).forward(req, resp);
     }
-
     public void exitProfile(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         HibernateUtils.closeEntityManager();
         req.getSession().setAttribute(CURRENT_MSG, null);
         req.getSession().setAttribute(PASSWORD_MSG, null);
         req.getSession().setAttribute(EMAIL_MSG, null);
         req.getSession().setAttribute(ROLE_MSG, null);
-        resp.sendRedirect("signIn");
+        resp.sendRedirect(SIGNIN_URL);
     }
 
     public void changeProfile(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
@@ -83,7 +82,7 @@ public class UserServlet extends HttpServlet {
             try {
                 page = Integer.parseInt(currentPage);
             } catch (NumberFormatException e) {
-                LOGGER.log(Level.INFO, "Failed parsing currentPage");
+                LOGGER.log(Level.INFO, PARSE_MSG_GETLIB);
             }
         }
         Set<GameDTO> gameDTOSet = gameService.getLimited(current.getId(), page, perPage);
